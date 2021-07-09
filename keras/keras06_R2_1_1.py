@@ -16,18 +16,13 @@ y = np.array(range(1,101))
 
 
 # 인덱싱 방법 2
-x_train, y_train, x_test, y_test = train_test_split(x, y, train_size=0.7, shuffle=True, random_state=66)
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, shuffle=True, random_state=66)
 #  shuffle은 기본값이 True이므로 굳이 적어주지 않아도 된다.
 # random_state 는 재현가능(for reproducibility)하도록 난수의 초기값을 설정해주는 것 -> 아무 숫자나 넣어주면 된다.
 
 print(x_train.shape, y_train.shape)  # (70,) (70,)
 print(x_test.shape, y_test.shape)  # (30,) (30,)
 
-
-print(x_train)
-print(y_train)
-print(x_test)
-print(y_test)
 
 # 2. model
 model = Sequential()

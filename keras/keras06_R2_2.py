@@ -26,13 +26,27 @@ model.add(Dense(8))
 model.add(Dense(3))
 model.add(Dense(5))
 model.add(Dense(1))
+model.add(Dense(9))
+model.add(Dense(4))
+model.add(Dense(8))
+model.add(Dense(3))
+model.add(Dense(5))
+model.add(Dense(1))
+model.add(Dense(5))
+model.add(Dense(9))
+model.add(Dense(4))
+model.add(Dense(8))
+model.add(Dense(3))
+model.add(Dense(5))
+model.add(Dense(1))
+model.add(Dense(9))
 
 # 3. Compile
 model.compile(loss='mse', optimizer="adam")
 
 # model.fit(x, y, epochs=5000, batch_size=1)
 # model.fit(x, y, epochs=3000, batch_size=1)
-model.fit(x, y, epochs=1000, batch_size=1)
+model.fit(x, y, epochs=1000, batch_size=100)
 
 loss = model.evaluate(x, y)
 print('loss: ', loss)
@@ -51,7 +65,7 @@ r2 = r2_score(y, y_pred) # y_test, y_pred 차이
 
 print('r2스코어:',r2)
 
-# r2스코어: 0.8099427550765881
+# r2스코어: 0.8100000762938692
 
 
 # 과제 2

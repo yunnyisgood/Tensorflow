@@ -16,26 +16,23 @@ from sklearn.model_selection import train_test_split
 x = np.array(range(100)) 
 y = np.array(range(1,101))
 
-x_train, y_train, x_test, y_test = train_test_split(x, y, train_size=0.7, shuffle=True, random_state=66)
-
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, shuffle=True, random_state=66)
 
 print(x_train.shape, y_train.shape)  # (70,) (70,)
 print(x_test.shape, y_test.shape)  # (30,) (30,)
 
 # 2. model
 model = Sequential()
-model.add(Dense(2000, input_dim=13))
-model.add(Dense(1000))
-model.add(Dense(3000))
-model.add(Dense(5000))
-model.add(Dense(2000))
+model.add(Dense(3, input_dim=1))
+model.add(Dense(2))
+model.add(Dense(4))
+model.add(Dense(3))
 model.add(Dense(1))
 
-
 # 3. Compile
-model.compile(loss='mse', optimizer='adam')
+model.compile(loss='kld', optimizer='adam')
 
-model.fit(x_train, y_train, epochs=100, batch_size=1)
+model.fit(x_train, y_train, epochs=300, batch_size=1)
 
 # 4. evaluate and predict
 loss = model.evaluate(x_test, y_test)
@@ -48,5 +45,5 @@ from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_pred)
 print('r2의 스코어: ', r2)
 
-
+# r2의 스코어:  0.9999999999831506
 
