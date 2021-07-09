@@ -1,4 +1,7 @@
-from sklearn.datasets import load_boston # 교육용 예제 임포트
+from sklearn.datasets import load_boston
+from tensorflow.python.keras.models import Sequential # 교육용 예제 임포트
+from tensorflow.keras.layers import Dense
+import numpy as np
 
 #1. data
 datasets = load_boston()
@@ -12,7 +15,10 @@ print(datasets.DESCR)
 print(datasets.feature_names)
 
 
-# model
+
+
+
+
 
 
 
