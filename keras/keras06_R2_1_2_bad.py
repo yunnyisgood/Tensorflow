@@ -27,23 +27,30 @@ model.add(Dense(3, input_dim=1))
 model.add(Dense(2))
 model.add(Dense(4))
 model.add(Dense(3))
+model.add(Dense(2))
+model.add(Dense(4))
+model.add(Dense(3))
 model.add(Dense(1))
 
 # 3. Compile
 model.compile(loss='kld', optimizer='adam')
 
-model.fit(x_train, y_train, epochs=300, batch_size=1)
+model.fit(x_train, y_train, epochs=3000, batch_size=100)
 
 # 4. evaluate and predict
 loss = model.evaluate(x_test, y_test)
 print('loss:', loss)
 
+# loss: 0.021101607009768486
+
 y_pred = model.predict(x_test)
 print('y의 예측값:', y_pred)
+
+# y의 예측값: [[ 5.206236 ]
 
 from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_pred)
 print('r2의 스코어: ', r2)
 
-# r2의 스코어:  0.9999999999831506
+# r2의 스코어:  0.4402994366844327
 

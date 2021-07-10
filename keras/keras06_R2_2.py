@@ -18,35 +18,36 @@ x_pred = [6]
 model = Sequential()
 model.add(Dense(5, input_dim=1))
 model.add(Dense(4))
-model.add(Dense(7))
+model.add(Dense(6))
 model.add(Dense(5))
-model.add(Dense(9))
 model.add(Dense(4))
-model.add(Dense(8))
+model.add(Dense(4))
+model.add(Dense(5))
 model.add(Dense(3))
 model.add(Dense(5))
 model.add(Dense(1))
-model.add(Dense(9))
+model.add(Dense(3))
 model.add(Dense(4))
-model.add(Dense(8))
+model.add(Dense(5))
 model.add(Dense(3))
 model.add(Dense(5))
 model.add(Dense(1))
 model.add(Dense(5))
-model.add(Dense(9))
-model.add(Dense(4))
-model.add(Dense(8))
 model.add(Dense(3))
+model.add(Dense(4))
+model.add(Dense(5))
+model.add(Dense(3))
+model.add(Dense(6))
 model.add(Dense(5))
 model.add(Dense(1))
-model.add(Dense(9))
+
 
 # 3. Compile
 model.compile(loss='mse', optimizer="adam")
 
 # model.fit(x, y, epochs=5000, batch_size=1)
 # model.fit(x, y, epochs=3000, batch_size=1)
-model.fit(x, y, epochs=1000, batch_size=100)
+model.fit(x, y, epochs=3000, batch_size=150)
 
 loss = model.evaluate(x, y)
 print('loss: ', loss)
@@ -71,6 +72,3 @@ print('r2스코어:',r2)
 # 과제 2
 # R2를 0.9 올려라
 # 기한은 일요일 밤 12시까지
-
-
-
