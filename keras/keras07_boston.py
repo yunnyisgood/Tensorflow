@@ -44,7 +44,6 @@ print('y의 예측값:', y_pred)
 
 from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_pred) # y_test, y_pred 차이
-
 print('r2스코어:',r2)
 
 

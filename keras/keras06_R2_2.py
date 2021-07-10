@@ -47,7 +47,7 @@ model.compile(loss='mse', optimizer="adam")
 
 # model.fit(x, y, epochs=5000, batch_size=1)
 # model.fit(x, y, epochs=3000, batch_size=1)
-model.fit(x, y, epochs=3000, batch_size=150)
+model.fit(x, y, epochs=3000, batch_size=100)
 
 loss = model.evaluate(x, y)
 print('loss: ', loss)
