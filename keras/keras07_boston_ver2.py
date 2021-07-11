@@ -40,7 +40,7 @@ model.fit(x_train,y_train, epochs=100, batch_size=30 )
 
 
 # 4. evaluate and predict
-loss = model.evaluate(x_test, y_test)
+loss = model.evaluate(x_test, y_test) 
 print('loss:', loss)
 
 # loss: [19.372793197631836, 2.867462158203125]
