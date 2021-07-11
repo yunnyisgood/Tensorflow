@@ -56,6 +56,9 @@ print('r2스코어:',r2)
 
 # 예측값과 실제값의 차이 시각화 
 plt.scatter(y_test, y_pred)
+# 상관관계를 파악하고자 하는 값 x, y를 넣어준다
+# 좌표를 나타낸다 
+
 plt.xlabel('True Values[1000$]')
 plt.ylabel('Predictions [1000$]')
 plt.axis('equal')

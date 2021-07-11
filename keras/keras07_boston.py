@@ -57,6 +57,7 @@ print('r2스코어:',r2)
 # 시각화 
 plt.scatter(y_test, y_pred)
 plt.plot(x, y_pred, color='red')
+# x와 x_test를 통해 예측한 y의 값을 그래프로 나타낸다
 plt.show()
 
 
