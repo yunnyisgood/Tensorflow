@@ -50,12 +50,17 @@ y_pred = model.predict(x_test)  # 훈련시킨 weight를 넣어 예측값을 도
 # 원래 y값, 훈련시켜서 도출해낸 결과값
 print('x_test의 예측값:', y_pred)
 
+# loss:  6.36716768198653e-09
 
 from sklearn.metrics import r2_score, mean_squared_error
 r2 = r2_score(y_test, y_pred) # y_test, y_pred 차이
 print('r2스코어:',r2)
 
+# r2스코어: 0.999999999992718
+
 def RMSE(y_test, y_pred):
     return np.sqrt(mean_squared_error(y_test, y_pred))
 rmse = RMSE(y_test, y_pred)
 print('rmse: ', rmse)
+
+# rmse:  7.979453471763823e-05

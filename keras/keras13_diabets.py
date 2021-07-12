@@ -23,37 +23,40 @@ print(datasets.feature_names)
 print(datasets.DESCR)
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, 
-train_size=0.6, shuffle=True, random_state=66)
+train_size=0.7, shuffle=True, random_state=9)
 
 # 2. modeling
 model = Sequential()
-model.add(Dense(100, input_dim=10))
-model.add(Dense(150))
-model.add(Dense(100))
-model.add(Dense(80))
-model.add(Dense(50))
-model.add(Dense(20))
+model.add(Dense(1000, input_dim=10, activation='relu'))
+model.add(Dense(60, activation='relu'))
+# model.add(Dense(40, activation='relu'))
+model.add(Dense(40, activation='relu'))
+model.add(Dense(40, activation='relu'))
+model.add(Dense(24, activation='relu'))
+model.add(Dense(24, activation='relu'))
+model.add(Dense(15, activation='relu'))
+model.add(Dense(8, activation='relu'))
+model.add(Dense(4, activation='relu'))
+model.add(Dense(2, activation='relu'))
 model.add(Dense(1))
-
 
 # 3. compile
 model.compile(loss='mse', optimizer='adam')
 
-model.fit(x_train, y_train, epochs=500, batch_size=45, 
-validation_split=0.5)
+model.fit(x_train, y_train, epochs=100, batch_size=36, 
+validation_split=0.03, shuffle=True)
 
 # 4. evaluate, predict
 loss = model.evaluate(x_test, y_test)
 print('loss:', loss)
 # loss: 3002.1416015625
 
-
 y_pred = model.predict(x_test)
 print('y예측값: ', y_pred)
 
 r2 = r2_score(y_test, y_pred)
 print('r2 스코어: ', r2)
-# r2 스코어:  0.5065703468309615
+# r2 스코어: 
 
 # 과제 1
 # r2 0.62 이상으로 올릴것 -> mail에 github 주소 보내도록
