@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
+# boston 주택 가격 예측
 
 #1. data
 datasets = load_boston()
@@ -29,8 +30,6 @@ model.add(Dense(20))
 model.add(Dense(15))
 model.add(Dense(1))
 
-
-
 # 3. compile
 model.compile(loss='mse', optimizer="adam")
 
@@ -43,16 +42,16 @@ model.fit(x_train, y_train, epochs=100, batch_size=10)
 loss = model.evaluate(x_test, y_test)
 print('loss:', loss)
 
-# loss: 76.62830352783203
+# loss: 37.513221740722656
 
 y_pred = model.predict(x_test)
 print('x_test를 통한 y의 예측값:', y_pred)
 
-# from sklearn.metrics import r2_score
-# r2 = r2_score(y_test, y_pred) # y_test, y_pred 차이
-# print('r2스코어:',r2)
+from sklearn.metrics import r2_score
+r2 = r2_score(y_test, y_pred) # y_test, y_pred 차이
+print('r2스코어:',r2)
 
-# # r2스코어: 0.07248870680689357
+# # r2스코어: 0.3354429571900964
 
 # # 시각화 
 # plt.scatter(y_test, y_pred)

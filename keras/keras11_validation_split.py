@@ -6,8 +6,8 @@ from sklearn.model_selection import train_test_split
 
 # 1. 데이터
 # 훈련 데이터 
-x = np.array([1, 2, 4, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13])
-y = np.array([1, 2, 4, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13])
+x = np.array([1, 2, 4, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
+y = np.array([1, 2, 4, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15])
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, 
 train_size=0.8, shuffle=True, random_state=66)
