@@ -23,18 +23,20 @@ train_size=0.7, shuffle=True, random_state=66)
 # 2.model
 model = Sequential()
 model.add(Dense(10, input_dim=13))
-model.add(Dense(20))
-model.add(Dense(13))
-model.add(Dense(20))
-model.add(Dense(15))
+model.add(Dense(7))
+model.add(Dense(5))
+model.add(Dense(9))
+model.add(Dense(4))
+model.add(Dense(8))
+model.add(Dense(3))
+model.add(Dense(5))
 model.add(Dense(1))
-
 
 
 # 3. compile
 model.compile(loss='mse', optimizer="adam")
 
-model.fit(x_train, y_train, epochs=100, batch_size=10)
+model.fit(x_train, y_train, epochs=100, batch_size=43, validation_split=0.3)
 # model.fit(x_train, y_train, epochs=100) -> batch_size는 default로 들어가 있다
 # 값은 32가 기본값
 
@@ -48,17 +50,17 @@ print('loss:', loss)
 y_pred = model.predict(x_test)
 print('x_test를 통한 y의 예측값:', y_pred)
 
-# from sklearn.metrics import r2_score
-# r2 = r2_score(y_test, y_pred) # y_test, y_pred 차이
-# print('r2스코어:',r2)
+from sklearn.metrics import r2_score
+r2 = r2_score(y_test, y_pred) # y_test, y_pred 차이
+print('r2스코어:',r2)
 
-# # r2스코어: 0.07248870680689357
+# r2스코어: 0.07248870680689357
 
-# # 시각화 
-# plt.scatter(y_test, y_pred)
-# plt.plot(x, y_pred, color='red')
-# # x와 x_test를 통해 예측한 y의 값을 그래프로 나타낸다
-# plt.show()
+# 시각화 
+plt.scatter(y_test, y_pred)
+plt.plot(x, y_pred, color='red')
+# x와 x_test를 통해 예측한 y의 값을 그래프로 나타낸다
+plt.show()
 
 
 
