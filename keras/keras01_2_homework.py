@@ -6,6 +6,7 @@ import numpy as np
 # 완성한뒤, 출력결과 스샷
 
 # 1. 데이터
+# 데이터 정제가 제대로 되지 않을 때
 x = np.array([1, 2, 3, 4, 5])
 y = np.array([1, 2, 4, 3, 5])
 print(x)
