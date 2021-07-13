@@ -47,8 +47,8 @@ print('loss: ', loss)
 
 # loss:  3.352187923155725e-05
 
-result = model.predict(x_pred)
-print('result: ', result)
+# result = model.predict(x_pred)
+# print('result: ', result)
 
 # result:  [[  3.7012   28.30966 208.91016]]
 

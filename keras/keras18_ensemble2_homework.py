@@ -4,7 +4,14 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input
 
-# ensemble modeling -> 여러개의 모델을 통해 하나의 예측치를 도출하는 것 
+
+# 과제 4 -> Concatenate 클래스 사용해서 하기 
+# import keras.backend as K
+# class Concatenate():  
+#     #blablabla   
+#     def _merge_function(self, inputs):
+#         return K.concatenate(inputs, axis=self.axis)
+
 
 #1. data
 
@@ -45,18 +52,18 @@ dense13 = Dense(4, activation='relu', name='dense13')(dense12)
 dense14 = Dense(4, activation='relu', name='dense14')(dense13)
 output2 = Dense(4, name='output2')(dense14)
 
-# concatenate를 통해 output 1개로 도출하기
-merge1 = concatenate([output1, output2]) # 23개의 노드로 합쳐짐
+# class Concatenate를 통해 output 1개로 도출하기
+merge1 = Concatenate(axis=1)([output1, output2]) # 23개의 노드로 합쳐짐
 merge2 = Dense(10)(merge1)
 merge3 = Dense(5, activation='relu')(merge2)
 # last_output = Dense(1)(merge3)
 
 # concat 된 상태에서 다시 분리
-output21 = Dense(7)(merge3) #  여기서는 분기하고 싶은 지점이 merge3
-last_output1 = Dense(1)(output21)
+output21 = Dense(7, name='output21')(merge3) #  여기서는 분기하고 싶은 지점이 merge3
+last_output1 = Dense(1, name='last_output1')(output21)
 
-output22 = Dense(7)(merge3)
-last_output2 = Dense(1)(output22)
+output22 = Dense(7, name='output22')(merge3)
+last_output2 = Dense(1, name='last_output2')(output22)
 
 model = Model(inputs=[input1, input2], outputs=[last_output1, last_output2])
 
@@ -67,10 +74,13 @@ model.compile(loss='mse', optimizer='adam', metrics=['mae'])
 
 model.fit([x1_train, x2_train], [y1_train, y2_train], epochs=100, batch_size=8, verbose=1)
 
-# # 평가 예측
+# 평가 예측
 results = model.evaluate([x1_test, x2_test], [y1_test, y2_test])
 # x1_test, x2_test를 통해 하나의 y_test를 도출한다
 
 # print(results)
-print('loss: ',results[0])
-print('metrics[mae]: ',results[1])
+print('loss: ',results[0:]) 
+# loss:  [6858.64306640625, 891.2557373046875, 5967.38720703125, 26.094615936279297, 67.51670837402344]
+
+
+# print('metrics[mae]: ',results[1])

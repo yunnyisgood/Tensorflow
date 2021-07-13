@@ -19,21 +19,21 @@ print(y.shape) # (506,) -> output_dim = 1
 print(datasets.feature_names)
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, 
-train_size=0.7, shuffle=True, random_state=66)
+train_size=0.7, shuffle=True, random_state=9)
 
 # 2.model
 model = Sequential()
-model.add(Dense(10, input_dim=13))
-model.add(Dense(20))
-model.add(Dense(13))
-model.add(Dense(20))
-model.add(Dense(15))
+model.add(Dense(1000, input_dim=13, activation='relu'))
+model.add(Dense(100, activation='relu'))
+model.add(Dense(60, activation='relu'))
+model.add(Dense(20, activation='relu'))
+model.add(Dense(10, activation='relu'))
 model.add(Dense(1))
 
 # 3. compile
 model.compile(loss='mse', optimizer="adam")
 
-model.fit(x_train, y_train, epochs=100, batch_size=10)
+model.fit(x_train, y_train, epochs=100, batch_size=30)
 # model.fit(x_train, y_train, epochs=100) -> batch_size는 default로 들어가 있다
 # 값은 32가 기본값
 
@@ -43,6 +43,7 @@ loss = model.evaluate(x_test, y_test)
 print('loss:', loss)
 
 # loss: 37.513221740722656
+# loss: 18.4830265045166
 
 y_pred = model.predict(x_test)
 print('x_test를 통한 y의 예측값:', y_pred)
@@ -51,7 +52,8 @@ from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_pred) # y_test, y_pred 차이
 print('r2스코어:',r2)
 
-# # r2스코어: 0.3354429571900964
+# r2스코어: 0.3354429571900964
+# r2스코어: 0.7917688093385801
 
 # # 시각화 
 # plt.scatter(y_test, y_pred)

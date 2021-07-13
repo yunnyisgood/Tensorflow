@@ -47,7 +47,7 @@ model.fit(x_train, y_train, epochs=100, batch_size=36,
 validation_split=0.03, shuffle=True)
 
 # 4. evaluate, predict
-loss = model.evaluate(x_test, y_test)
+loss = model.evaluate(x_test, y_test) # x_test를 통해 예측한 값, 실제 y_test의 값의 차이를 loss
 print('loss:', loss)
 # loss: 3002.1416015625
 

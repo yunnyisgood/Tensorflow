@@ -8,10 +8,10 @@ from sklearn.model_selection import train_test_split
 x = np.array(range(100))
 y = np.array(range(1,101))
 
-x_train = x[0:70]
-y_train = y[:70]
-x_test = x[-30:]  # x[7:0]과 동일
-y_test = y[70:]
+# x_train = x[0:70]
+# y_train = y[:70]
+# x_test = x[-30:]  # x[7:0]과 동일
+# y_test = y[70:]
 
 print(x_train.shape, y_train.shape)  # (70,) (70,)
 print(x_test.shape, y_test.shape)  # (30,) (30,)
@@ -31,33 +31,33 @@ print(x_test)
 print(y_test)
 
 
-# # 2. model
-# model = Sequential()
-# model.add(Dense(5, input_dim=1))
-# model.add(Dense(4))
-# model.add(Dense(5))
-# model.add(Dense(7))
-# model.add(Dense(3))
-# model.add(Dense(1))
+# 2. model
+model = Sequential()
+model.add(Dense(5, input_dim=1))
+model.add(Dense(4))
+model.add(Dense(5))
+model.add(Dense(7))
+model.add(Dense(3))
+model.add(Dense(1))
 
 
-# # 3. Compile
-# model.compile(loss='mse', optimizer="adam")
+# 3. Compile
+model.compile(loss='mse', optimizer="adam")
 
-# model.fit(x_train, y_train, epochs=1000, batch_size=1)
+model.fit(x_train, y_train, epochs=100, batch_size=10)
 
-# #4. 평가, 예측
-# loss = model.evaluate(x_test, y_test)
-# print('loss: ', loss)
+#4. 평가, 예측
+loss = model.evaluate(x_test, y_test)
+print('loss: ', loss)
 
-# # loss:  3.2621681690216064
+# loss:  3.2621681690216064
 
-# # result = model.predict([x_pred])
-# # print('10의 예측값: ', result)
+result = model.predict([x_pred])
+print('10의 예측값: ', result)
 
-# # 10의 예측값:  [[9.276111]]
+# 10의 예측값:  [[9.276111]]
 
-# y_pred = model.predict([11])
-# # plt.scatter(x, y)
-# # plt.plot(x, y_pred, color='red')
-# # plt.show()
+y_pred = model.predict([11])
+# plt.scatter(x, y)
+# plt.plot(x, y_pred, color='red')
+# plt.show()

@@ -5,8 +5,8 @@ import numpy as np
 # 1. 데이터
 x = np.array([1, 2, 4, 3, 5, 6])
 y = np.array([1, 2, 3, 4, 5])
-print(x1)
-print(y1)
+print(x)
+print(y)
 x_pred = [6]
 
 # 6번째 값을 예측할 것 
