@@ -27,7 +27,7 @@ train_size=0.7, shuffle=True, random_state=9)
 
 # 2. modeling
 model = Sequential()
-model.add(Dense(1000, input_dim=10, activation='relu'))
+model.add(Dense(400, input_dim=10, activation='relu'))
 model.add(Dense(60, activation='relu'))
 # model.add(Dense(40, activation='relu'))
 model.add(Dense(40, activation='relu'))
@@ -43,7 +43,7 @@ model.add(Dense(1))
 # 3. compile
 model.compile(loss='mse', optimizer='adam')
 
-model.fit(x_train, y_train, epochs=100, batch_size=36, 
+model.fit(x_train, y_train, epochs=100, batch_size=10, 
 validation_split=0.03, shuffle=True)
 
 # 4. evaluate, predict
