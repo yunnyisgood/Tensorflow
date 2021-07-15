@@ -60,6 +60,12 @@ from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_pred) # y_test, y_pred 차이
 print('r2스코어:',r2)
 
+'''
+PowerTransformer, MinMaxScaler, StandardScaler 순서로
+가장 성능이 우수
+ 
+'''
+
 # r2스코어: 0.3354429571900964
 # r2스코어: 0.7853412907684698
 

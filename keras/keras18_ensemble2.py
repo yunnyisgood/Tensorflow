@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Input
 
+
 # ensemble modeling -> 여러개의 모델을 통해 하나의 예측치를 도출하는 것 
 
 #1. data
