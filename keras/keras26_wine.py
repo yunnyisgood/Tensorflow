@@ -5,7 +5,8 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler, PowerTransformer, QuantileTransformer
+from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, PowerTransformer, QuantileTransformer
+
 
 '''
 완성
@@ -15,6 +16,7 @@ accuracy 0.8 이상 만들어 볼 것
 
 datasets = load_wine()
 
+print(type(datasets))  # <class 'sklearn.utils.Bunch'>
 print(datasets.DESCR)
 print(datasets.feature_names)
 
