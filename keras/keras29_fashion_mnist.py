@@ -53,3 +53,4 @@ shuffle=True)
 loss = model.evaluate(x_test, y_test)
 print('loss: ', loss[0])
 print('accuracy: ', loss[1])
+
