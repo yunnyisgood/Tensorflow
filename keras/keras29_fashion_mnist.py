@@ -29,10 +29,10 @@ y_test = to_categorical(y_test)
 model = Sequential()
 model.add(Conv2D(filters=100, kernel_size=(2, 2), 
                     padding='same', input_shape=(28, 28, 1)))
-model.add(Conv2D(100, (2,2), activation='relu'))   
-model.add(Conv2D(64, (2,2), activation='relu'))   
-model.add(Conv2D(64, (2,2), activation='relu'))  
-model.add(MaxPooling2D()) 
+model.add(Conv2D(100, (2,2), padding='same', activation='relu'))   
+model.add(Conv2D(64, (2,2), padding='same', activation='relu'))   
+model.add(Conv2D(64, (2,2), padding='same', activation='relu'))  
+# model.add(MaxPooling2D()) -> 왜 이렇게 하면 loss가 안나올까?
 model.add(Conv2D(32, (2,2), activation='relu')) 
 model.add(Conv2D(32, (2,2), activation='relu')) 
 model.add(MaxPooling2D()) 
@@ -44,9 +44,9 @@ model.add(Dense(10, activation='softmax'))
 # compile       
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 
-es = EarlyStopping(monitor='loss', patience=20, verbose=1, mode='min')
+es = EarlyStopping(monitor='loss', patience=8, verbose=1, mode='min')
 
-model.fit(x_train, y_train, epochs=1000, verbose=1, callbacks=[es], validation_split=0.01,
+model.fit(x_train, y_train, epochs=100, verbose=1, callbacks=[es], validation_split=0.01,
 shuffle=True)
 
 # evaluate 
@@ -54,3 +54,5 @@ loss = model.evaluate(x_test, y_test)
 print('loss: ', loss[0])
 print('accuracy: ', loss[1])
 
+# loss:  0.7816981673240662
+# accuracy:  0.9120000004768372

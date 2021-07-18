@@ -25,11 +25,11 @@ y_test = to_categorical(y_test)
 # modeling
 model = Sequential()
 model.add(Conv2D(filters=100, kernel_size=(2, 2), 
-                    padding='same', input_shape=(28, 28, 3)))
+                    padding='same', input_shape=(32, 32, 3)))
 model.add(Conv2D(100, (2,2), activation='relu'))   
 model.add(Conv2D(64, (2,2), activation='relu'))   
 model.add(Conv2D(64, (2,2), activation='relu'))  
-model.add(MaxPooling2D()) 
+# model.add(MaxPooling2D()) 
 model.add(Conv2D(32, (2,2), activation='relu')) 
 model.add(Conv2D(32, (2,2), activation='relu')) 
 model.add(MaxPooling2D()) 
@@ -41,10 +41,10 @@ model.add(Dense(10, activation='softmax'))
 # compile
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 
-es = EarlyStopping(monitor='loss', patience=20, verbose=1, mode='min')
+es = EarlyStopping(monitor='loss', patience=10, verbose=1, mode='min')
 
 model.fit(x_train, y_train, epochs=1000, verbose=1, callbacks=[es], validation_split=0.01,
-shuffle=True)
+shuffle=True, batch_size=8)
 
 # evaluate 
 loss = model.evaluate(x_test, y_test)
