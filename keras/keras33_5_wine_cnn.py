@@ -4,19 +4,16 @@ from scipy.sparse import data
 from sklearn import datasets
 from sklearn.datasets import load_wine
 from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, PowerTransformer, QuantileTransformer
 from sklearn.metrics import r2_score
+from tensorflow.keras.layers import Dense, Conv2D, Dropout, GlobalAveragePooling2D
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, RobustScaler, QuantileTransformer, PowerTransformer, OneHotEncoder
+from tensorflow.keras.callbacks import EarlyStopping
+import time
 
 # 다중분류, 0.8이상 완성
-
-'''
-./ -> 현재폴더
-../ -> 상위폴더
-'''
 
 datasets = pd.read_csv('../_data/winequality-white.csv', sep=';',
                         index_col=None, header=0)
@@ -38,7 +35,6 @@ print(x.shape) # (4898, 11)
 print(y.shape) # (4898, 1)
 
 
-#sklearn 의 onehot 사용할것
 one_hot_Encoder = OneHotEncoder()
 one_hot_Encoder.fit(y)
 y = one_hot_Encoder.transform(y).toarray()
@@ -51,20 +47,42 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
 test_size=0.7, random_state=9, shuffle=True)
 
 
-scaler = PowerTransformer()
+scaler = QuantileTransformer()
 scaler.fit(x_train)
 scaler.transform(x_train)
 scaler.transform(x_test)
 
-'''
+
+print(x_train.shape, x_test.shape) # (1469, 11) (3429, 11)
+print(y_train.shape, y_test.shape)
+
+x_train = x_train.reshape(1469, 11, 1, 1)
+x_test = x_test.reshape(3429, 11, 1, 1)
+
+print(y.shape) # (4898, 7)로 바뀌어야 한다
+
+
 # modeling
 model = Sequential()
-model.add(Dense(5000, input_shape=(11, ), activation='relu'))
-model.add(Dense(500, activation='relu'))
-model.add(Dense(60, activation='relu'))
-model.add(Dense(20, activation='relu'))
-model.add(Dense(10, activation='relu'))
-model.add(Dense(7, activation='softmax')) 
+model.add(Conv2D(filters=6, kernel_size=(1,1), 
+                    padding='same', input_shape=(1, 1, 1), activation='relu'))
+# model.add(Dropout(0, 2)) # 20%의 드롭아웃의 효과를 낸다 
+model.add(Dropout(0.2))
+model.add(Conv2D(16, (1,1), padding='same', activation='relu'))   
+
+model.add(Conv2D(64, (1,1),padding='valid', activation='relu'))  
+model.add(Dropout(0.2))
+model.add(Conv2D(64, (1,1), padding='same', activation='relu')) 
+
+
+model.add(Conv2D(128, (1,1), padding='valid', activation='relu')) 
+model.add(Dropout(0.2))
+model.add(Conv2D(128, (1,1), padding='same', activation='relu')) 
+
+# 여기까지가 convolutional layer 
+
+model.add(GlobalAveragePooling2D())
+model.add(Dense(7, activation='softmax'))
 
 # compile
 model.compile(loss='categorical_crossentropy', optimizer='adam', 
@@ -88,6 +106,7 @@ print(y_test[:5])
 print('--------softmax를 통과한 값 --------')
 print(y_pred)
 
+
 # scaler 없을 때
 # loss:  2.146963357925415
 # accuracy:  0.47389909625053406
@@ -100,4 +119,6 @@ print(y_pred)
 # loss:  1.7815757989883423
 # accuracy:  0.4849810302257538
 
-'''
+# CNN으로 실행했을 때 
+# loss:  1.343643307685852
+# accuracy:  0.4444444477558136

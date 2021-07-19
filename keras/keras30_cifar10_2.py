@@ -54,3 +54,6 @@ shuffle=True, batch_size=100)
 loss = model.evaluate(x_test, y_test)
 print('loss: ', loss[0])
 print('accuracy: ', loss[1])
+
+# loss:  1.2721869945526123
+# accuracy:  0.6816999912261963

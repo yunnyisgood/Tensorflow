@@ -1,13 +1,15 @@
 import numpy as np
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.utils import to_categorical
 from sklearn.metrics import r2_score
 import matplotlib.pyplot as plt
+from tensorflow.keras.layers import Dense, Conv2D, Dropout, GlobalAveragePooling2D
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, RobustScaler, QuantileTransformer, PowerTransformer
+from tensorflow.keras.callbacks import EarlyStopping
+import time
 
 # 다중분류, One-Hot-Encoding 
 
@@ -45,15 +47,34 @@ scaler.fit(x_train)
 scaler.transform(x_train)
 scaler.transform(x_test)
 
+print(x_train.shape, x_test.shape) # (105, 4) (45, 4)
+print(y_train.shape, y_test.shape) # (105, 3) (45, 3)
 
-#modeling
+x_train = x_train.reshape(105, 4, 1, 1)
+x_test = x_test.reshape(45, 4, 1, 1)
+
+
+# modeling
 model = Sequential()
-model.add(Dense(1000, input_shape=(4,), activation='relu'))
-model.add(Dense(100, activation='relu'))
-model.add(Dense(60, activation='relu'))
-model.add(Dense(20, activation='relu'))
-model.add(Dense(10, activation='relu'))
-model.add(Dense(3, activation='softmax')) 
+model.add(Conv2D(filters=6, kernel_size=(1,1), 
+                    padding='same', input_shape=(1, 1, 1), activation='relu'))
+# model.add(Dropout(0, 2)) # 20%의 드롭아웃의 효과를 낸다 
+model.add(Dropout(0.2))
+model.add(Conv2D(16, (1,1), padding='same', activation='relu'))   
+
+model.add(Conv2D(64, (1,1),padding='valid', activation='relu'))  
+model.add(Dropout(0.2))
+model.add(Conv2D(64, (1,1), padding='same', activation='relu')) 
+
+
+model.add(Conv2D(128, (1,1), padding='valid', activation='relu')) 
+model.add(Dropout(0.2))
+model.add(Conv2D(128, (1,1), padding='same', activation='relu')) 
+
+# 여기까지가 convolutional layer 
+
+model.add(GlobalAveragePooling2D())
+model.add(Dense(3, activation='softmax'))
 # output 
 
 # compile
@@ -78,5 +99,9 @@ print(y_pred)
 '''
 loss:  0.10622021555900574
 accuracy:  0.9555555582046509
+
+CNN으로 실행했을 떄
+loss:  0.592060923576355
+accuracy:  0.7555555701255798
 
 '''

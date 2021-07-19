@@ -13,7 +13,7 @@ from tensorflow.keras.utils import to_categorical
 print(x_train.shape, y_train.shape)  # (50000, 32, 32, 3) (50000, 1)
 print(x_test.shape, y_test.shape)  # (10000, 32, 32, 3) (10000, 1)
 
-print(np.unique(y_train)) # [0 1 2 3 4 5 6 7 8 9]
+print(np.unique(y_train)) 
 
 # 전처리 하기 -> one-hot-encoding
 y_train = to_categorical(y_train)
@@ -28,23 +28,23 @@ model.add(Conv2D(100, kernel_size=(2, 2),
                     padding='same', input_shape=(32, 32, 3), activation='relu'))
 model.add(Conv2D(100, (2,2), padding='same', activation='relu'))   
 model.add(Conv2D(64, (2,2), padding='same', activation='relu'))   
-model.add(Conv2D(64, (2,2),padding='same', activation='relu'))  
 model.add(MaxPool2D()) 
+model.add(Conv2D(64, (2,2),padding='same', activation='relu'))  
 model.add(Conv2D(32, (2,2), padding='same', activation='relu')) 
 model.add(Conv2D(32, (2,2), padding='same', activation='relu')) 
 model.add(MaxPool2D()) 
 model.add(Flatten()) 
 model.add(Dense(64, activation='relu'))
-model.add(Dense(32, activation='relu'))
+model.add(Dense(64, activation='relu'))
 model.add(Dense(100, activation='softmax'))
 
 # compile
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics='acc')
 
-es = EarlyStopping(monitor='val_loss', patience=5, verbose=1, mode='auto')
+es = EarlyStopping(monitor='val_loss', patience=20, verbose=1, mode='min')
 
-model.fit(x_train, y_train, epochs=1000, verbose=1, callbacks=[es], validation_split=0.01,
-shuffle=True, batch_size=200)
+model.fit(x_train, y_train, epochs=1000, verbose=1, callbacks=[es], validation_split=0.001,
+shuffle=True, batch_size=100)
 
 # evaluate 
 loss = model.evaluate(x_test, y_test)
