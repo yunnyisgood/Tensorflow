@@ -56,7 +56,7 @@ scaler.fit(x_train)
 scaler.transform(x_train)
 scaler.transform(x_test)
 
-'''
+
 # modeling
 model = Sequential()
 model.add(Dense(5000, input_shape=(11, ), activation='relu'))
@@ -100,4 +100,3 @@ print(y_pred)
 # loss:  1.7815757989883423
 # accuracy:  0.4849810302257538
 
-'''
