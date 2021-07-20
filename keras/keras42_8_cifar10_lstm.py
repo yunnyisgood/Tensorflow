@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPool2D
+from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPool2D, LSTM
 from sklearn.preprocessing import MinMaxScaler, PowerTransformer, QuantileTransformer, StandardScaler
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras.utils import to_categorical
@@ -26,10 +26,11 @@ scaler = MinMaxScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
+x_train = x_train.reshape(50000, 32*3, 32)
+x_test = x_test.reshape(10000, 32*3, 32)
+
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
-
-print(y_train.shape, y_test.shape) # (50000, 10) (10000, 10)
 
 
 # modeling
@@ -48,7 +49,7 @@ model.add(Dense(64, activation='relu'))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(10, activation='softmax'))
 
-model.summary()'''
+model.summary()
 
 
 # modeling -> DNN
@@ -58,15 +59,26 @@ model.add(Dense(500, activation='relu'))
 model.add(Dense(64, activation='relu'))
 model.add(Dense(64, activation='relu'))
 model.add(Dense(32, activation='relu'))
-model.add(Dense(10, activation='softmax')) 
+model.add(Dense(10, activation='softmax')) '''
+
+# modeling -> RNN
+model = Sequential()
+model.add(LSTM(units=32, activation='relu', input_shape=(32*3,32)))
+model.add(Dense(16, activation='relu'))
+model.add(Dense(16, activation='relu'))
+model.add(Dense(16, activation='relu'))
+model.add(Dense(8, activation='relu'))
+model.add(Dense(10, activation='softmax'))
+
+model.summary()
 
 # compile       -> metrics=['acc']
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 
-es = EarlyStopping(monitor='val_loss', patience=20, verbose=1, mode='min')
+es = EarlyStopping(monitor='val_loss', patience=8, verbose=1, mode='min')
 
 start_time = time.time()
-hist = model.fit(x_train, y_train, epochs=1000, verbose=1, callbacks=[es], validation_split=0.2,
+hist = model.fit(x_train, y_train, epochs=100, verbose=1, callbacks=[es], validation_split=0.2,
 shuffle=True, batch_size=256)
 end_time = time.time() - start_time
 
@@ -77,6 +89,7 @@ print('loss: ', loss[0])
 print('accuracy: ', loss[1])
 
 
+'''
 # 시각화 
 plt.figure(figsize=(9,5))
 
@@ -103,7 +116,7 @@ plt.legend(['acc', 'val_acc'])
 plt.show()
 
 
-'''
+
 loss:  1.2721869945526123
 accuracy:  0.6816999912261963
 
@@ -117,5 +130,10 @@ accuracy:  0.5199999809265137
 걸린시간:  66.00103783607483
 loss:  1.5630486011505127
 accuracy:  0.5184000134468079
+
+RNN으로 도출 
+걸린시간:  407.3573589324951
+loss:  8.381452560424805
+accuracy:  0.010400000028312206
 
 '''
