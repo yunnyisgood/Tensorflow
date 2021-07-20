@@ -38,13 +38,11 @@ scaler.transform(x_test)
 x_train = x_train.reshape(354, 13, 1)
 x_test = x_test.reshape(152, 13, 1)
 
-print(y_train.shape, y_test.shape) # (354,) (152,)
-
-
 # modeling
+# 왜 padding='same'으로 해야 오류가 안날까? 
 model = Sequential()
 model.add(Conv1D(filters=6, kernel_size=2, 
-                    padding='same', input_shape=(13,1), activation='relu'))
+                    padding='same', input_shape=(13, 1), activation='relu'))
 # model.add(Dropout(0, 2)) # 20%의 드롭아웃의 효과를 낸다 
 model.add(Dropout(0.2))
 model.add(Conv1D(16, 2, padding='same', activation='relu'))   
@@ -96,9 +94,11 @@ print('r2스코어:',r2)
 # loss: 17.08149528503418
 # r2스코어: 0.807558585442023
 
-CNN으로 실행
+CNN으로 실행 -> 4차원 
 loss:  [71.0339126586914, 5.953949928283691]
 r2스코어: 0.19972649044261337
 
-
+CNN으로 실행 -> 3차원 
+loss:  120.11857604980469
+r2스코어: -0.3532650396138055
 '''

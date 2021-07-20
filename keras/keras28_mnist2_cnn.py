@@ -19,8 +19,7 @@ from tensorflow.keras.utils import to_categorical
 # 단, 데이터의 내용물과 순서를 변경하면 안된다
 # 차원의 계수만 같다면 전혀 상관 없다
 
-x_train = x_train.reshape(60000, 28, 28, 1)
-x_test = x_test.reshape(10000, 28, 28, 1)
+
 
 print(np.unique(y_train)) 
 # [0 1 2 3 4 5 6 7 8 9]
@@ -30,11 +29,9 @@ print(np.unique(y_train))
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
 
-# scaler = MinMaxScaler()
-# scaler.fit(x_train)
-# scaler.transform(x_train)
-# scaler.transform(x_test)
 
+x_train = x_train.reshape(60000, 28, 28, 1)
+x_test = x_test.reshape(10000, 28, 28, 1)
 
 # modeling
 model = Sequential()
