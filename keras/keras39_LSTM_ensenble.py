@@ -2,7 +2,7 @@ import numpy as np
 from numpy import array
 from tensorflow.keras.layers import concatenate, Concatenate
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Dense, Input, LSTM
+from tensorflow.keras.layers import Dense, Input, GRU, LSTM
 
 # data
 x1 = array([[1,2,3], [2,3,4], [3,4,5], [4,5,6],
@@ -18,7 +18,9 @@ x2_pred = array([65,75,85])
 
 print(x1.shape, x2.shape, y.shape) # (13, 3) (13, 3) (13,)
 
+x1 = x1.reshape(13,3,1)
 x1 = x1.reshape(x1.shape[0], x1.shape[1], 1)
+x2 = x2.reshape(13,3,1)
 x2 = x2.reshape(x2.shape[0], x2.shape[1], 1)
 x1_pred = x1_pred.reshape(1, x1_pred.shape[0], 1)
 x2_pred = x2_pred.reshape(1, x2_pred.shape[0], 1)
@@ -28,21 +30,21 @@ print(x1.shape, x2.shape, x1_pred.shape) # (13, 3, 1) (13, 3, 1) (1, 3, 1)
 #2. modeling
 # 2-1 model 1
 input1 = Input(shape=(3, 1))
-dense = LSTM(units=32, activation='relu', name='dense')(input1)
-dense1 = Dense(16, name='dense1')(dense) 
-dense2 = Dense(16, name='dense2')(dense1)
-dense3 = Dense(16, name='dense3')(dense2)
-dense4 = Dense(8, name='dense4')(dense3)
-output1 = Dense(8, name='output1')(dense4)
+xx = LSTM(units=32, activation='relu', name='dense0')(input1)
+xx = Dense(16, name='dense1')(xx) 
+xx = Dense(16, name='dense2')(xx)
+xx = Dense(16, name='dense3')(xx)
+xx = Dense(8, name='dense4')(xx)
+output1 = Dense(8, name='output1')(xx)
 
 # 2-2 model2
 input2 = Input(shape=(3, 1))
-dense = LSTM(units=32, activation='relu', name='dense')(input)
-dense11 = Dense(16, name='dense11')(dense) 
-dense22 = Dense(16, name='dense22')(dense11)
-dense33 = Dense(16, name='dense33')(dense22)
-dense44 = Dense(8, name='dense44')(dense33)
-output2 = Dense(8, name='output2')(dense44)
+xx = LSTM(units=32, activation='relu', name='dense00')(input2)
+xx = Dense(16, name='dense11')(xx) 
+xx = Dense(16, name='dense22')(xx)
+xx = Dense(16, name='dense33')(xx)
+xx = Dense(8, name='dense44')(xx)
+output2 = Dense(8, name='output2')(xx)
 
 # concatenate를 통해 output 1개로 도출하기
 merge1 = concatenate([output1, output2]) # 23개의 노드로 합쳐짐
@@ -73,3 +75,10 @@ results = model.evaluate([x1, x2], y)
 # print(results)
 print('loss: ',results[0])
 print('metrics[mae]: ',results[1])
+
+'''
+
+loss:  1.3733876943588257
+metrics[mae]:  0.6879465579986572
+
+'''
