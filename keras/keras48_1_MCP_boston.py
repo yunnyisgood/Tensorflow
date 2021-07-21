@@ -42,9 +42,9 @@ x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], 1)
 
 print(y_train.shape, y_test.shape) # (354,) (152,)
 
-
+'''
 # modeling
-'''model = Sequential()
+model = Sequential()
 model.add(LSTM(units=32, activation='relu', input_shape=(13, 1), return_sequences=True))
 model.add(Conv1D(10,2, padding='same'))
 model.add(Flatten())
@@ -64,11 +64,11 @@ es = EarlyStopping(monitor='val_loss', patience=10, verbose=1, mode='min')
 cp = ModelCheckpoint(monitor='val_loss', save_best_only=True, mode='auto', 
 filepath='./_save/ModelCheckPoint/keras47_MCP_boston.hdf5')
 start_time = time.time()
-model.fit(x_train, y_train, epochs=100, verbose=1, callbacks=[es], validation_split=0.01,
+model.fit(x_train, y_train, epochs=100, verbose=1, callbacks=[es, cp], validation_split=0.01,
 shuffle=True, batch_size=10)
 end_time = time.time() - start_time
 '''
-# model.save('./_save/ModelCheckPoint/keras47_MCP_boston.hdf5')
+# model.save('./_save/ModelCheckPoint/keras47_MCP_boston.h5')
 model = load_model('./_save/ModelCheckPoint/keras47_MCP_boston.hdf5')
 
 # evaluate 
@@ -101,8 +101,11 @@ Conv1d
 loss:  [26.68522834777832, 3.815570592880249]
 r2스코어: 0.699362151102279
 
-CheckPoint
-걸린시간:  31.683058738708496
-loss:  [26.76219367980957, 4.180410861968994]
-r2스코어: 0.6984950530520678 -> 동일 
+# MCP [전] -> early stopping 지점
+# loss:  [25.989887237548828, 3.618107557296753]
+# r2스코어: 0.707195934432949
+
+# MCP [후] -> modelCheckPoint 지점 
+# loss:  [32.10688400268555, 3.9130918979644775]
+# r2스코어: 0.6382814169607904
 '''

@@ -49,10 +49,10 @@ cp = ModelCheckpoint(monitor='val_loss', save_best_only=True, mode='auto',
 filepath='./_save/ModelCheckPoint/keras47_MCP.hdf5')
 
 start_time = time.time()
-model.fit(x_train, y_train, epochs=50, validation_split=0.03, shuffle=True, batch_size=256)
+model.fit(x_train, y_train, epochs=50, validation_split=0.03, shuffle=True, batch_size=256, callbacks=[es, cp])
 end_time = time.time() - start_time
 
-model.save('./_save/ModelCheckPoint/keras47_MCP.h5')
+model.save('./_save/ModelCheckPoint/keras47_MCP.h5') # early stopping된 weight값 저장 
 
 # 4. evaluate, predict
 loss = model.evaluate(x_test, y_test) # x_test를 통해 예측한 값, 실제 y_test의 값의 차이를 loss
@@ -78,5 +78,5 @@ print('r2 스코어: ', r2)
 # r2 스코어:  -3.757703054133498
 
 # MCP
-# loss: 26291.650390625
-# r2 스코어:  -3.757573610918329
+# loss: 26495.822265625
+# r2 스코어:  -3.7945194264043796

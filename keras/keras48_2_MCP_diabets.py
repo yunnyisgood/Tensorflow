@@ -71,12 +71,12 @@ filepath='./_save/ModelCheckPoint/keras47_MCP_diabets.hdf5')
 
 start_time = time.time()
 model.fit(x_train, y_train, epochs=100, batch_size=33, 
-validation_split=0.03, shuffle=True)
+validation_split=0.03, shuffle=True, callbacks=[es, cp])
 end_time = time.time() - start_time
 
-model.save('./_save/ModelCheckPoint/keras47_MCP_diabets.hdf5')
-'''
-model = load_model('./_save/ModelCheckPoint/keras47_MCP_diabets.hdf5')
+model.save('./_save/ModelCheckPoint/keras47_MCP_diabets.h5')'''
+
+model = load_model('./_save/ModelCheckPoint/keras47_MCP_diabets.h5')
 
 # evaluate, predict
 loss = model.evaluate(x_test, y_test) 
@@ -103,8 +103,13 @@ loss: 2888.014892578125
 r2 스코어:  -4.097410769470927
 rmse:  53.740255180024
 
-CheckPoint
-loss: 0.007036431226879358
-r2 스코어:  0.9999875805441045
-rmse:  0.08388343241379474 -> 동일 
+MCP [전] -> early stopping 지점
+loss: 0.274578332901001
+r2 스코어:  0.9995153631611435
+rmse:  0.5240022114396947
+
+MCP [후] -> modelCheckPoint 지점 
+loss: 0.274578332901001
+r2 스코어:  0.9995153631611435
+rmse:  0.5240022114396947
 '''

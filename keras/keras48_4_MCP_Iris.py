@@ -11,6 +11,8 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler, MaxAbsScaler, Ro
 from tensorflow.keras.callbacks import EarlyStopping
 import time
 
+from tensorflow.python.keras.saving.save import load_model
+
 # 다중분류, One-Hot-Encoding 
 
 datasets = load_iris()
@@ -53,8 +55,8 @@ print(y_train.shape, y_test.shape) # (105, 3) (45, 3)
 x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], 1)
 x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], 1)
 
-'''
-# modeling
+
+'''# modeling
 model = Sequential()
 model.add(LSTM(units=32, activation='relu', input_shape=(4, 1), return_sequences=True))
 model.add(Conv1D(10, 2, activation='relu'))
@@ -74,9 +76,9 @@ es = EarlyStopping(monitor='loss', patience=20, verbose=1, mode='min')
 cp = ModelCheckpoint(monitor='val_loss', mode='auto', save_best_only=True, 
 filepath='./_save/ModelCheckPoint/keras47_MCP_Iris.hdf5')
 
-hist = model.fit(x_train, y_train, epochs=1000, batch_size=8, validation_split=0.2, callbacks=[es])
+hist = model.fit(x_train, y_train, epochs=1000, batch_size=8, validation_split=0.2, callbacks=[es, cp])
 
-model.save('./_save/ModelCheckPoint/keras47_MCP_Iris.hdf5')'''
+model.save('./_save/ModelCheckPoint/keras47_MCP_Iris.h5')'''
 
 model = load_model('./_save/ModelCheckPoint/keras47_MCP_Iris.hdf5')
 
@@ -106,7 +108,11 @@ Conv1D
 loss:  6.447238445281982
 accuracy:  0.42222222685813904
 
-MCP
-loss:  9.670857429504395
-accuracy:  0.4000000059604645
+MCP [전] -> early stopping 지점
+loss:  11.461756706237793
+accuracy:  0.6888889074325562
+
+MCP [후] -> modelCheckPoint 지점 
+loss:  8.954497337341309
+accuracy:  0.31111112236976624
 '''

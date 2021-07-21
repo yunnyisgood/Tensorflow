@@ -43,8 +43,8 @@ print(y_train.shape, y_test.shape)
 x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], 1)
 x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], 1)
 
-'''
-# modeling
+
+'''# modeling
 model = Sequential()
 model.add(LSTM(units=32, activation='relu', input_shape=(30, 1), return_sequences=True))
 model.add(Conv1D(10, 2, activation='relu'))
@@ -65,9 +65,9 @@ es = EarlyStopping(monitor='loss', patience=20, verbose=1, mode='min')
 cp = ModelCheckpoint(monitor='val_loss', mode='auto', save_best_only=True, 
 filepath='./_save/ModelCheckPoint/keras47_MCP_cancer.hdf5')
 
-hist = model.fit(x_train, y_train, epochs=1000, batch_size=8, validation_split=0.2, callbacks=[es])
+hist = model.fit(x_train, y_train, epochs=1000, batch_size=8, validation_split=0.2, callbacks=[es, cp])
 
-# model.save('./_save/ModelCheckPoint/keras47_MCP_cancer.hdf5')'''
+model.save('./_save/ModelCheckPoint/keras47_MCP_cancer.h5')'''
 
 model = load_model('./_save/ModelCheckPoint/keras47_MCP_cancer.hdf5')
 
@@ -93,9 +93,13 @@ Conv1D로 실행했을 때
 loss:  9.832276344299316
 accuracy:  0.3625730872154236
 
-MCP
+MCP [전] -> early stopping 지점
 loss:  5.528964042663574
-accuracy:  0.6374269127845764 -> 동일 
+accuracy:  0.6374269127845764
+
+MCP [후] -> modelCheckPoint 지점 
+loss:  5.528964042663574
+accuracy:  0.6374269127845764
 '''
 
 
