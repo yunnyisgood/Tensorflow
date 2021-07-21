@@ -8,7 +8,6 @@ from tensorflow.keras.layers import Dense
 from sklearn.preprocessing import StandardScaler
 import time
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
-from tensorflow.python.keras.saving.hdf5_format import load_weights_from_hdf5_group
 
 # 당뇨 예측
 
@@ -78,3 +77,10 @@ print('r2 스코어: ', r2)
 # loss: 26292.365234375
 # r2 스코어:  -3.757703054133498
 
+# MCP [전] -> early stopping 지점
+# loss: 26291.650390625
+# r2 스코어:  -3.757573610918329
+
+# MCP [후] -> modelCheckPoint 지점 
+# loss: 26347.5546875
+# r2 스코어:  -3.767689566353668

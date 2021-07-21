@@ -53,7 +53,7 @@ print(y_train.shape, y_test.shape) # (105, 3) (45, 3)
 x_train = x_train.reshape(x_train.shape[0], x_train.shape[1], 1)
 x_test = x_test.reshape(x_test.shape[0], x_test.shape[1], 1)
 
-
+'''
 # modeling
 model = Sequential()
 model.add(LSTM(units=32, activation='relu', input_shape=(4, 1), return_sequences=True))
@@ -76,7 +76,9 @@ filepath='./_save/ModelCheckPoint/keras47_MCP_Iris.hdf5')
 
 hist = model.fit(x_train, y_train, epochs=1000, batch_size=8, validation_split=0.2, callbacks=[es])
 
-model.save('./_save/ModelCheckPoint/keras47_MCP_Iris.hdf5')
+model.save('./_save/ModelCheckPoint/keras47_MCP_Iris.hdf5')'''
+
+model = load_model('./_save/ModelCheckPoint/keras47_MCP_Iris.hdf5')
 
 # evaluate
 loss = model.evaluate(x_test, y_test) # evaluate는 metrics도 반환
