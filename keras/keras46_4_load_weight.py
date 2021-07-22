@@ -8,7 +8,6 @@ from tensorflow.keras.layers import Dense
 from sklearn.preprocessing import StandardScaler
 import time
 from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.python.keras.saving.hdf5_format import load_weights_from_hdf5_group
 
 # 당뇨 예측
 
@@ -47,8 +46,10 @@ model.summary()
 
 model.compile(loss='mse', optimizer='adam')
 
-model.load_weights('./_save/keras46_1_save_weights_1.h5') 
-
+model = model.load_weights('./_save/keras46_1_save_weights_new.h5') 
+# model.load_weights('./_save/keras46_1_save_weights_2.h5') 
+# save_weights는 순수하게 weight 자체만 저장하기 때문에
+# compile을 실행한 다음, load_weights를 실행해줘야 한다 
 
 es = EarlyStopping(monitor='val_loss', patience=8, verbose=1, mode='min')
 
@@ -68,14 +69,12 @@ print('y예측값: ', y_pred)
 
 r2 = r2_score(y_test, y_pred)
 print('r2 스코어: ', r2)
-# r2 스코어: 
 
 
-# 과제 1
-# r2 0.62 이상으로 올릴것 -> mail에 github 주소 보내도록
+# './_save/keras46_1_save_weights_1.h5'
+# loss: 27093.423828125
+# r2 스코어:  -3.902657364981736
 
-# loss: 2337.067138671875
-# r2 스코어:  0.5770988303739539
-
-# load_model()s
-
+# './_save/keras46_1_save_weights_2.h5'
+# loss: 26247.33984375
+#r2 스코어:  -3.7495556329006376

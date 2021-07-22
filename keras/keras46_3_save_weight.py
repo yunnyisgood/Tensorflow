@@ -54,7 +54,7 @@ start_time = time.time()
 model.fit(x_train, y_train, epochs=50, validation_split=0.03, shuffle=True, batch_size=256)
 end_time = time.time() - start_time
 
-model.save_weights('./_save/keras46_1_save_weights_2.h5')
+model.save_weights('./_save/keras46_1_save_weights_new.h5')
 
 
 # 4. evaluate, predict
@@ -75,5 +75,6 @@ print('r2 스코어: ', r2)
 # loss: 2337.067138671875
 # r2 스코어:  0.5770988303739539
 
-# load_model()s
-
+# './_save/keras46_1_save_weights_new.h5'
+# loss: 26327.666015625
+# r2 스코어:  -3.764091012895329

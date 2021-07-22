@@ -37,7 +37,7 @@ y = datasets[:, 11:]
 print(x.shape) # (4898, 11)
 print(y.shape) # (4898, 1)
 
-
+'''
 #sklearn 의 onehot 사용할것
 one_hot_Encoder = OneHotEncoder()
 one_hot_Encoder.fit(y)
@@ -87,6 +87,7 @@ print(y_test[:5])
 # print(y_test[-5:-1])
 print('--------softmax를 통과한 값 --------')
 print(y_pred)
+'''
 
 # scaler 없을 때
 # loss:  2.146963357925415
