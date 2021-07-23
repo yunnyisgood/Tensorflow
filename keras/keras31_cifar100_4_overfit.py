@@ -93,7 +93,7 @@ end_time = time.time() - start_time
 
 
 
-# evaluate 
+# evaluate, predict
 loss = model.evaluate(x_test, y_test)
 print("걸린시간: ", end_time)
 print('category: ', loss[0])
