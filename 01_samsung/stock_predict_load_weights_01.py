@@ -45,9 +45,10 @@ sk = sk.reshape(2597*5, 5)
 
 
 x1 = samsung[:10000]
-y = samsung[2:10002, 4] 
+y = samsung[2:10002, 3] # 종가 
 y= y.flatten() # (10000,) 
-print(x1.shape, y.shape) # (10000, 5)
+print(x1.shape, y.shape) # (10000, 5) (10000,)
+print(y)
 
 x2 = sk[:10000]
 
@@ -56,7 +57,7 @@ x2_pred = sk[-5:]
 
 print(x1.shape, x2.shape, y.shape )  # (10000, 5) (10000, 5) (10000,)
 
-print(x1_pred.shape, x2_pred.shape) #(2, 5) (2, 5)
+print(x1_pred.shape, x2_pred.shape) # (5, 5) (5, 5)
 
 x1_train, x1_test,x2_train, x2_test, y_train, y_test = train_test_split(x1, x2,  y, 
                                                         train_size=0.7, random_state=9)
@@ -87,25 +88,29 @@ print(x1_train.shape, x1_test.shape,
 #2. modeling
 # 2-1 model 1
 input1 = Input(shape=(5, 1))
-xx = LSTM(units=1000, activation='relu', return_sequences=True)(input1)
-xx = Conv1D(100,2)(xx) 
-xx = Conv1D(64,2)(xx) 
-xx = Flatten()(xx) 
-xx = Dense(100, activation='relu', name='dense1')(xx)
+xx = LSTM(units=32, activation='relu', return_sequences=True)(input1)
+xx = Conv1D(16, 2, activation='relu')(xx)
+xx = Conv1D(16,2, activation='relu')(xx)
+xx = LSTM(units=16, activation='relu', return_sequences=True)(input1)
+xx = Conv1D(8, 2, activation='relu')(xx)
+xx = Flatten()(xx)
+xx = Dense(100, activation='relu')(xx)
 output1 = Dense(16, name='output1', activation='relu')(xx)
 
 # 2-2 model2
 input2 = Input(shape=(5, 1))
-xx = LSTM(units=1000, activation='relu', return_sequences=True)(input1)
-xx = Conv1D(100,2)(xx) 
-xx = Conv1D(64,2)(xx) 
-xx = Flatten()(xx) 
-xx = Dense(100, activation='relu', name='dense11')(xx)
+xx = LSTM(units=32, activation='relu', return_sequences=True)(input1)
+xx = Conv1D(16,2, activation='relu')(xx)
+xx = Conv1D(16,2, activation='relu')(xx)
+xx = LSTM(units=16, activation='relu', return_sequences=True)(input1)
+xx = Conv1D(8, 2, activation='relu')(xx)
+xx = Flatten()(xx)
+xx = Dense(100, activation='relu')(xx)
 output2 = Dense(16, name='output2', activation='relu')(xx)
 
 merge1 = concatenate([output1, output2]) 
-merge2 = Dense(8, activation='relu')(merge1)
-merge3 = Dense(4, activation='relu')(merge2)
+merge2 = Dense(100, activation='relu')(merge1)
+merge3 = Dense(16, activation='relu')(merge2)
 last_output = Dense(1)(merge3)
 
 model = Model(inputs=[input1, input2], outputs=last_output)
@@ -115,25 +120,15 @@ model.summary()
 # compile
 model.compile(loss='mse', optimizer='adam', metrics=['acc'])
 
+model.load_weights('./_save/ModelCheckPoint/stock_weight_save0723_0954.h5')
+
 es = EarlyStopping(monitor='val_loss', patience=5, verbose=1, mode='auto', restore_best_weights=True)
 
-date = datetime.datetime.now()
-date_time = date.strftime("%m%d_%H%M")
-
-filepath = './_save/ModelCheckPoint/' 
-filename = '.{epoch:04d}-{val_loss:.4f}.hdf5'           
-MCPpath = "".join([filepath, "stock_", date_time, "-", filename])    
-#                               47번째 파일 , 오늘 날짜, 
-
-mcp = ModelCheckpoint(monitor='val_loss', save_best_only=True, verbose=1, mode='auto',
-                        filepath = MCPpath)
-
 start_time = time.time()
-model.fit([x1_train, x2_train], y_train, epochs=100, batch_size=512, verbose=1, callbacks=[es, mcp],
-validation_split=0.2)
+# model.fit([x1_train, x2_train], y_train, epochs=100, batch_size=512, verbose=1, callbacks=[es, mcp], validation_split=0.2)
 end_time = time.time() -start_time
 
-model.save_weights('./_save/ModelCheckPoint/stock_weight_save.h5')
+# model.save_weights('./_save/ModelCheckPoint/stock_weight_save2.h5')
 
 # evaluate
 results = model.evaluate([x1_test, x2_test], y_test)
@@ -142,7 +137,8 @@ print('loss: ',results[0])
 print('acc: ',results[1])
 
 y_pred = model.predict([x1_pred, x2_pred])
-print('2일 뒤 예측 주가: ', y_pred[-1])
+print('y_pred: ', y_pred)
+print('2일 뒤 예측 주가: ', y_pred[-2])
 
 
 '''
@@ -152,20 +148,55 @@ metrics[mae]:  0.0
 2일 뒤 예측 주가:  [[10649922.]
  [10986487.]]
 
-걸린시간:  83.10190987586975
-loss:  48231086030848.0
-acc:  48231086030848.0
-2일 뒤 예측 주가:  [[18395338.]
- [18376122.]]
+loss:  233541447188480.0
+acc:  0.0020000000949949026
+2일 뒤 예측 주가:  [[0.01100441]
 
-걸린시간:  47.447530031204224
-loss:  44729819463680.0
-acc:  44729819463680.0
-2일 뒤 예측 주가:  [26360024.]
+걸린시간:  32.81836247444153
+loss:  100830749392896.0
+acc:  0.0
+2일 뒤 예측 주가: [15897088.  ]]
 
-걸린시간:  27.30354404449463
-loss:  44425912778752.0
-acc:  44425912778752.0
-2일 뒤 예측 주가:  [17580940.]
+걸린시간:  30.284231901168823
+loss:  213269680.0
+acc:  0.0
+2일 뒤 예측 주가:  [[78932.74]
+
+걸린시간:  23.702643394470215
+loss:  213190944.0
+acc:  0.0
+2일 뒤 예측 주가:  [[78678.22]
+
+
+걸린시간:  14.718028545379639
+loss:  596690.4375
+acc:  0.0
+y_pred:  [[80030.516]
+ [79512.64 ]
+ [79175.19 ]
+ [78934.73 ]
+ [79192.22 ]]
+2일 뒤 예측 주가:  [78934.73]
+
+걸린시간:  14.59900689125061
+loss:  594541.375
+acc:  0.0
+y_pred:  [[79602.234]
+ [80140.24 ]
+ [78742.26 ]
+ [78541.38 ]
+ [78810.03 ]]
+2일 뒤 예측 주가:  [78541.38]
+
+걸린시간:  15.531609058380127
+loss:  583461.1875
+acc:  0.0
+y_pred:  [[79996.55]
+ [79960.65]
+ [79009.68]
+ [78697.75]
+ [78884.07]]
+2일 뒤 예측 주가:  [78697.75]
+
 '''
 
