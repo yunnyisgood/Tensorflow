@@ -1,4 +1,3 @@
-from re import T
 from tensorflow.keras import datasets
 from tensorflow.keras.datasets import reuters
 import numpy as np
@@ -48,7 +47,9 @@ print(np.unique(y_train)) # 46개
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
 
-print(y_train.shape, y_test.shape) # (8982, 46) (2246, 46)
+print(x_train.shape, x_test.shape,
+      y_train.shape, y_test.shape)
+      # (8982, 100) (2246, 100) (8982, 46) (2246, 46)
 
 
 # modeling
