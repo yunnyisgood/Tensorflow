@@ -20,7 +20,6 @@ from tensorflow.keras.utils import to_categorical
 # 차원의 계수만 같다면 전혀 상관 없다
 
 
-
 print(np.unique(y_train)) 
 # [0 1 2 3 4 5 6 7 8 9]
 # -> 즉 값의 범위가 0~9까지라는 의미
@@ -33,8 +32,11 @@ y_test = to_categorical(y_test)
 x_train = x_train.reshape(60000, 28, 28, 1)
 x_test = x_test.reshape(10000, 28, 28, 1)
 
+
+
+
 # modeling
-model = Sequential()
+'''model = Sequential()
 model.add(Conv2D(filters=100, kernel_size=(2, 2), 
                     padding='same', input_shape=(28, 28, 1)))
 model.add(Conv2D(100, (2,2), activation='relu'))   
@@ -60,7 +62,7 @@ shuffle=True)
 # evaluate -> predict 할 필요는 없다
 loss = model.evaluate(x_test, y_test)
 print('loss: ', loss[0])
-print('accuracy: ', loss[1])
+print('accuracy: ', loss[1])'''
 
 
 # loss:  0.46171167492866516

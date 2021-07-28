@@ -55,7 +55,7 @@ print(np.unique(pad_x))
 
 model = Sequential()
 model.add(Embedding(input_dim=28, output_dim=11, input_length=5))
-model.add(Conv1D(32, 2))
+model.add(Conv1D(32,2))
 model.add(Dense(16, activation='relu'))
 model.add(Dense(1, activation='sigmoid'))
 
