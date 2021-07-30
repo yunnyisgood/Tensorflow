@@ -9,8 +9,6 @@ import time
 import matplotlib.pyplot as plt
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-
-
 # 10개의 이미지를 분류하는 것
 # 컬러 데이터
 
@@ -31,7 +29,7 @@ train_datagen = ImageDataGenerator(
     fill_mode='nearest',
     )
 
-augment_size=60000
+augment_size=50000
 
 randidx = np.random.randint(x_train.shape[0], size=augment_size)       # x_train[0]에서 아그먼트 사이즈 만큼 랜덤하게 들어감
 
@@ -44,16 +42,14 @@ y_augmented = y_train[randidx].copy()
 
 print(x_augmented.shape)       # (40000, 28, 28)
 
-
-x_augmented = x_augmented.reshape(x_augmented.shape[0], 28, 28, 1)
-x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
-x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)
-
 import time
 start = time.time()
                                 
 x_augmented = train_datagen.flow(x_augmented, np.zeros(augment_size), 
-batch_size=augment_size, shuffle=False, save_to_dir='d:/temp/')
+batch_size=augment_size, shuffle=False, 
+# save_to_dir='d:/temp/'
+).next()[0]
+
 end = time.time() - start
 print(x_augmented[0][0].shape)       
 print(x_augmented[0][1].shape)  
@@ -61,28 +57,26 @@ print(x_augmented[0][1][:10])
 print(x_augmented[0][1][10:15])  
 print('걸린시간 :', end)
 
+x_train = np.concatenate((x_train, x_augmented))
+y_train = np.concatenate((y_train, y_augmented))
+
+print(x_train.shape, y_train.shape)
+
 # modeling
 model = Sequential()
 model.add(Conv2D(128, kernel_size=(2, 2), 
                     padding='valid', input_shape=(32, 32, 3), activation='relu'))
-# model.add(Dropout(0, 2)) # 20%의 드롭아웃의 효과를 낸다 
 model.add(Dropout(0.2))
 model.add(Conv2D(128, (2,2), padding='same', activation='relu'))   
 model.add(MaxPool2D()) 
 
-model.add(Conv2D(128, (2,2),padding='valid', activation='relu'))  
-model.add(Dropout(0.2))
-model.add(Conv2D(128, (2,2), padding='same', activation='relu')) 
-model.add(MaxPool2D()) 
-
-model.add(Conv2D(64, (2,2), padding='valid', activation='relu')) 
-model.add(Dropout(0.2))
-model.add(Conv2D(64, (2,2), padding='same', activation='relu')) 
-model.add(MaxPool2D()) 
+# model.add(Conv2D(64, (2,2), padding='valid', activation='relu')) 
+# model.add(Dropout(0.2))
+# model.add(Conv2D(64, (2,2), padding='same', activation='relu')) 
+# model.add(MaxPool2D()) 
 
 model.add(GlobalAveragePooling2D())
 model.add(Dense(100, activation='softmax'))
-
 
 
 # compile
@@ -133,3 +127,10 @@ plt.xlabel('epoch')
 plt.legend(['acc', 'val_acc'])
 
 plt.show()
+
+
+'''
+loss:  3.9177191257476807
+acc:  0.11473750323057175
+val_acc:  0.04699999839067459
+'''

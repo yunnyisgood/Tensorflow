@@ -16,12 +16,6 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 (x_train, y_train), (x_test, y_test) = cifar10.load_data()
 
 print(x_train.shape,y_train.shape, x_test.shape, y_test.shape )
-# (50000, 32, 32, 3) (50000, 1) (10000, 32, 32, 3) (10000, 1)
-
-# x_train = x_train.reshape(50000, 32*3, 32)
-# y_train = y_train.reshape(50000, )
-# x_test = x_test.reshape(10000, 32*3, 32)
-# y_test = y_train.reshape(10000, )
 
 train_datagen = ImageDataGenerator(
     rescale=1./255,
@@ -47,10 +41,6 @@ x_augmented = x_train[randidx].copy()
 y_augmented = y_train[randidx].copy()
 
 print(x_augmented.shape)       # (50000, 32, 32, 3)
-
-# x_augmented = x_augmented.reshape(x_augmented.shape[0], 32, 32, 3)
-# x_train = x_train.reshape(x_train.shape[0], 32, 32, 3)
-# x_test = x_test.reshape(x_test.shape[0], 32, 32, 3)
 
 import time
 start = time.time()
@@ -103,7 +93,6 @@ print('loss: ', loss[0])
 print('acc: ', acc[-1])
 print('val_acc: ', val_acc[-1])
 
-
 # 시각화 
 plt.figure(figsize=(9,5))
 
@@ -128,3 +117,13 @@ plt.xlabel('epoch')
 plt.legend(['acc', 'val_acc'])
 
 plt.show()
+
+'''
+loss:  1.5168966054916382
+acc:  0.47923749685287476
+val_acc:  0.39259999990463257
+
+loss:  1.3966277837753296
+acc:  0.4945000112056732
+val_acc:  0.4271000027656555
+'''
