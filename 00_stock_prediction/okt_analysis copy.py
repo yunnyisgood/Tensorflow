@@ -22,7 +22,7 @@ samsung_temp_list = []
 for sentence in samsung['title']:
     temp_samsung = []
     temp_samsung = okt.normalize(sentence)
-    temp_samsung  = okt.morphs(sentence, stem=True) # 형태소로 문장을 나누어 준다 
+    temp_samsung  = okt.morphs(sentence) # 형태소로 문장을 나누어 준다 
     temp_samsung = [word for word in temp_samsung if not word in stopwords]  # 불용어 처리 
     samsung_temp_list.append(temp_samsung)
 
@@ -122,28 +122,58 @@ result = []
 
 # # table = dict()
 
-print(samsung_temp_list[0])    
+# print(samsung_temp_list[0])    
 # ['코스닥', '공시', '위드', '텍', '케어', '젠']
 
+result_list = []
 def data_list(wordname):	
     for i in range(0, len(data)):
-        for j in range(len(samsung_temp_list)):
-            if data[i]['word'] == wordname[j]:
-                result.pop()
-                result.pop()
-
+        if data[i]['word'] == wordname:
+            if len(result) ==  0:
+                result.pop(0) if result else False
+                # result.pop(0)
                 result.append(data[i]['polarity'])	
+                print('result X: ',result)
 
-    print(result)
+            elif len(result) != 0:
+                result.pop()
+                result.append(data[i]['polarity'])	
+                print('result Y: ',result)
+        elif data[i]['word'] != wordname:
+            if len(result) == 0:
+                result.pop(0) if result else False
+                pass
+            elif len(result) != 0:
+                result.pop()
+                pass
+    # result_list.append(result)
+    print('result2:', result)
+    result_list.append(result)
+    print('result_list: ',result_list )
     return result
 
 final = []
+temp = [['가난히', '공시', '가래가', '텍', '가다듬어', '젠'], ['a', 'b', 'c', 'd', 'e']]
+temp2 = []
+# print(samsung_temp_list[0])    
+# # ['코스닥', '공시', '위드', '텍', '케어', '젠']
 
-for i in range(0, len(samsung_temp_list[0])):
-    data_list(samsung_temp_list[i])
+for i in range(len(temp)) :
+    for j in range(len(temp[i])):
+        print(temp[i][j])
+        data_list(temp[i][j])
+        temp2.append(result)
+    print('temp2: ',temp2)
     final.append(result)
+    print('final:',final)
+    # print('i[i]: ',i[i])
+    # data_list(i[i])
+    # final.append(result)
 
-print(final[:10])
+# print(final[:10])
 
 
+# for i in range()
 
+print(len(temp))
+# 2
