@@ -11,7 +11,7 @@ print(knu)
 class KnuSL():
 
 	def data_list(wordname):	
-		with open('../_data/SentiWord_info.json', encoding='utf-8-sig', mode='python') as f:
+		with open('../_data/SentiWord_info.json', encoding='utf-8-sig', mode='r') as f:
 			data = json.load(f)
 		result = ['None','None']	
 		for i in range(0, len(data)):
@@ -23,9 +23,11 @@ class KnuSL():
 		
 		r_word = result[0]
 		s_word = result[1]
+		# polarity = result[2]
 							
 		print('어근 : ' + r_word)
-		print('극성 : ' + s_word)		
+		print('극성 : ' + s_word)	
+		# print('polarity: ', polarity)	
 		
 		
 		return r_word, s_word

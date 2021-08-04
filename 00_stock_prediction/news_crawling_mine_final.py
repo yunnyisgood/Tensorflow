@@ -53,13 +53,7 @@ def main(): # 제목
 
         else:
             print('크롤링 완료!')
-            print(total_list_title)
-            print(total_list_date)
-            print(start)
-            print(len(total_list_title))
-            print(len(total_list_date))
-            print(int((start-1)/10)-1)
-            print(len(total_list_date))
+
             total_list_date = [element for array in total_list_date for element in array]
             total_list_title = [element for array in total_list_title for element in array]
             print(total_list_date)
