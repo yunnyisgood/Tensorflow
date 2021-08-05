@@ -14,7 +14,7 @@ with open('../_data/SentiWord_info.json', encoding='utf-8-sig', mode='r') as f:
 print(data)
 okt = Okt()
 
-df = pd.DataFrame
+df = pd.DataFrame()
 
 # 형태소 분석
 samsung_temp_list = []
@@ -26,6 +26,7 @@ for sentence in samsung['title']:
     samsung_temp_list.append(temp_samsung)
 samsung['samsung_temp_list'] = samsung_temp_list
 
+
 for i in samsung['samsung_temp_list'][:10]:
     print(i)
     print(type(i))
@@ -33,9 +34,9 @@ for i in samsung['samsung_temp_list'][:10]:
 
 result_list = []
 final_list = []
+
 def data_list(wordname):   
     for i in wordname:
-
         print('i', i)
         i in data['word_root'].values
         if i in data['word_root'].values:
@@ -48,22 +49,16 @@ def data_list(wordname):
             print('sameword:',sameword)
             print('score',sameword[-1][-1])
             print('result_list X: ', result_list)
-
         print('a')
         result_list.append(0)
         print('result_list Y: ', result_list)
     
     print('final_list: ', final_list)
-
     return final_list
-
-# ['코스닥', '공시', '위드', '텍', '케어', '젠']
     
-
 # final = []
+# ['코스닥', '공시', '위드', '텍', '케어', '젠']
 # temp = [['가능', '아리송', '가래가', '텍', '가다듬어', '젠'], ['a', 'b', 'c', 'd', 'e']]
-# temp2 = []
 
-# samsung['samsung_word list'] = np.nan
 samsung['samsung_temp_list'] = samsung['samsung_temp_list'][:2].apply(lambda x: data_list(x))
 print(samsung['samsung_temp_list'])

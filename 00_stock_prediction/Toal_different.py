@@ -25,13 +25,15 @@ samsung['samsung_temp_list'] = samsung_temp_list
 
 print(samsung)
 
-# 삼성주가 다운로드
-start_date = '2021-07-01'
-end_date = '2021-07-31'
-SAMSUNG = data.get_data_yahoo('005930.KS', start_date, end_date)
 
-df = pd.DataFrame({'ds': SAMSUNG.index, 'y': SAMSUNG['Close']})
-df.reset_index(inplace=True)
-del df['Date']
-print(df)
+
+# 삼성주가 다운로드
+# start_date = '2021-07-01'
+# end_date = '2021-07-31'
+# SAMSUNG = data.get_data_yahoo('005930.KS', start_date, end_date)
+
+# df = pd.DataFrame({'ds': SAMSUNG.index, 'y': SAMSUNG['Close']})
+# df.reset_index(inplace=True)
+# del df['Date']
+# print(df)
 

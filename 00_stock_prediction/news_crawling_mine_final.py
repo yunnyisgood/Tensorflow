@@ -20,7 +20,7 @@ def main(): # 제목
     while True:
 
         if start != 1921 :
-        # if start != 1921:
+
             # 삼성
             url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90&sort=0&photo=3&field=0&pd=3&ds=2021.07.01&de=2021.07.31&cluster_rank=18&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:from20210701to20210731,a:all&start={}'
             
@@ -28,7 +28,8 @@ def main(): # 제목
             # url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=%EC%B9%B4%EC%B9%B4%EC%98%A4&sort=0&photo=3&field=0&pd=3&ds=2021.07.01&de=2021.07.31&cluster_rank=10&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:from20210701to20210731,a:all&start={}'
 
             #네이버
-            # url ='https://search.naver.com/search.naver?where=news&sm=tab_pge&query=%EB%84%A4%EC%9D%B4%EB%B2%84&sort=0&photo=3&field=0&pd=3&ds=2021.07.01&de=2021.07.31&cluster_rank=18&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:from20210701to20210731,a:all&start={}'
+            # url ='https://search.naver.com/search.naver?where=news&sm=tab_pge&query=%EB%84%A4%EC%9D%B4%EB%B2%84&sort=0&photo=3&field=0&pd=3&ds=2021.07.01&de=
+            # 2021.07.31&cluster_rank=18&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:from20210701to20210731,a:all&start={}'
 
             headers = {'User-Agent': 'Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57'}
 
@@ -46,10 +47,8 @@ def main(): # 제목
             total_list_title.append(title_list)
             total_list_date.append(date_list)
 
-
             start += 10 
             print('크롤링 중.......')
-
 
         else:
             print('크롤링 완료!')
@@ -69,9 +68,9 @@ def main(): # 제목
                 return cleaned_text
 
             df['title'] = df['title'].dropna(axis=0).apply(lambda x : clean_text(x))
-            df['date'] = df['date'].dropna(axis=0) #.apply(lambda x : clean_blank(x))
+            df['date'] = df['date'].dropna(axis=0) 
 
-            df = df.sort_values(by=['date'], axis=0)
+            df = df.sort_values(by=['date'], axis=0) # 날짜 순으로 정렬
 
 
             df['date'] = df.date.str.replace('2일 전', '2021.07.26')
