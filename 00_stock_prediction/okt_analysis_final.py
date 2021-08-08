@@ -9,9 +9,6 @@ from itertools import accumulate
 from datetime import datetime
 import os
 
-
-
-
 samsung = pd.read_excel('../_data/네이버뉴스_2021-08-02_삼성전자.xlsx', header=0)
 stopwords = pd.read_csv('../_data/stopwords.txt').values.tolist()
 word_dict = pd.read_csv('../_data/SentiWord_Dict.txt', sep='\s+', header=None,
@@ -35,9 +32,7 @@ for sentence in samsung['title']:
 samsung['samsung_temp_list'] = samsung_temp_list
 
 
-# ['코스닥', '공시', '위드', '텍', '케어', '젠']
-# ['대구', '미술관', '이건희', '컬렉션', '특별', '전', '개최']
-
+# 각 형태소마다 점수로 수치화 시켜준다 
 result_list = []
 final_list = []
 def data_list(wordname):   
@@ -51,68 +46,45 @@ def data_list(wordname):
             sameword = sameword.values.tolist()
             score = sameword[-1][-1]
             if len(result_list)== 0:
-                # print('result_list 1: ', result_list)
                 result_list.append(score)
             elif len(result_list) != 0:
                 result_list.pop()
-                # print('result_list 2: ', result_list)
                 result_list.append(score)
-                # print('result_list 3: ', result_list)
-
-            # print('sameword:',sameword)
-            # print('score',sameword[-1][-1])
-
-        print('a')
         result_list.append(0)
         subset = result_list
         print(subset)
 
-    print('1')
     final_list.append(subset)
     df['score'] = pd.Series(final_list)
-    print('final_list 1: ', final_list)
-    print(df)
-
-    # return final_list
-
-#  ['코스닥', '공시', '위드', '텍', '케어', '젠']
-# ['대구', '미술관', '이건희', '컬렉션', '특별', '전', '개최']
-# [주년, 훨훨, 날아라, 코스닥, 연고, 점, 경신]
-
-
 
 samsung['samsung_word list'] = np.nan
 samsung['samsung_word list'] = samsung['samsung_temp_list'].apply(lambda x: data_list(x))
 print(samsung)
 
+# 1차원의 데이터를 각 문장의 길이만큼 다시 자르기 
 word_list = df['score'][0]
 print(word_list)
 new_list = []
 sum_len = 0
-samsung['word_list'] = ""
+samsung['word_list'] = np.nan
 
 for i in range(len(samsung['samsung_temp_list'])):
     print('i', i)
     if i == 0:
         temp_len = len(samsung['samsung_temp_list'][i])
-        print('temp_len  1: ', temp_len)
         temp = word_list[i:temp_len]
-        print('temp 1: ', temp)
         new_list.append(temp)
     elif i > 0:
         temp_len = len(samsung['samsung_temp_list'][i])
-        print('temp_len  2: ', temp_len) # 
         temp_len_before = len(samsung['samsung_temp_list'][i-1])
         sum_len += int(len(samsung['samsung_temp_list'][i-1]))
-        print('sum_len',sum_len) # 6
         temp = word_list[sum_len:temp_len+sum_len]
-        print('temp 2: ', temp)
         new_list.append(temp)
 
 samsung['word_list'] = pd.Series(new_list)
 del samsung['samsung_word list']
-print('new_list: ',new_list)
-print(samsung)
+
+
 
 
 # 엑셀 파일로 데이터 프레임 저장
@@ -121,7 +93,7 @@ date_time = date_time[:date_time.rfind(':')].replace(' ', '_')
 date_time = date_time.replace(':','시') + '분'
 
 folder_path = os.getcwd()
-xlsx_file_name = '삼성 최종{}.xlsx'.format(date_time)
+xlsx_file_name = '삼성_6개월_최종{}.xlsx'.format(date_time)
 
 samsung.to_excel(xlsx_file_name)
 
