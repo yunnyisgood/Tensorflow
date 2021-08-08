@@ -1,11 +1,8 @@
 import pandas as pd
 import json
-from konlpy.tag import Okt
 import numpy as np
-import konlpy
 import csv
-import yfinance as yf
-from pandas_datareader import data
+
 
 samsung = pd.read_excel('../_data/네이버뉴스_2021-08-02_삼성전자.xlsx', header=0)
 stopwords = pd.read_csv('../_data/stopwords.txt').values.tolist()
