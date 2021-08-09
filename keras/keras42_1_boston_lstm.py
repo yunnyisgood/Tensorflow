@@ -54,7 +54,7 @@ model.summary()
 
 
 # compile
-model.compile(loss='mse', optimizer='adam', metrics=['mae'])
+model.compile(loss='mse', optimizer='adam', metrics=['acc'])
 
 es = EarlyStopping(monitor='val_loss', patience=10, verbose=1, mode='min')
 

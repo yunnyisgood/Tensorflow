@@ -67,9 +67,6 @@ def main(): # 제목
                     total_list_title.append(title_list)
                     total_list_date.append(date_list)
 
-
-
-
         else:
             print('크롤링 완료!')
 

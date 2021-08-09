@@ -1,11 +1,9 @@
-from numpy.lib import twodim_base
 import pandas as pd
 import json
 from konlpy.tag import Okt
 import numpy as np
 import konlpy
 import csv
-from itertools import accumulate
 from datetime import datetime
 import os
 
