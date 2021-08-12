@@ -18,6 +18,7 @@ from sklearn.utils import all_estimators
 from sklearn.metrics import r2_score
 import time
 from sklearn.pipeline import make_pipeline, Pipeline
+from xgboost import XGBClassifier
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -40,25 +41,30 @@ kfold = KFold(n_splits=n_splits,  shuffle=True, random_state=66)
 #     { 'min_samples_split':[2, 3, 5, 10]}
 # ]
 
-parameters = [
-    {'rf__min_samples_leaf':[3, 5, 7], 'rf__max_depth':[2, 3, 5, 10]},
-    { 'rf__min_samples_split':[6, 8, 10]}
-]
+# parameters = [
+#     {'rf__min_samples_leaf':[3, 5, 7], 'rf__max_depth':[2, 3, 5, 10]},
+#     { 'rf__min_samples_split':[6, 8, 10]}
+# ]
 # 2)
 # 아래 오류의 해결 방법! -> 모델명을 소문자로 작성해서 파라미터 앞에 작성해준다 
 
-#2.modeling
-# pipe = make_pipeline(MinMaxScaler(), RandomForestClassifier())
-# RandomForestClassifier 모델을 make_pipeline으로 맵핑한 형태의 모델 
-pipe = Pipeline([("scaler", MinMaxScaler()), ("rf", RandomForestClassifier())])
+parameters = [
+
+    {"xgb__n_estimators":[100, 200, 300], "xgb__learning_rate": [0.1, 0.3, 0.001, 0.01],
+    "xgb__max_depth": [4,5,6]},
+    {"xgb__n_estimators":[90, 100, 110], "xgb__learning_rate": [0.1,  0.001, 0.01],
+    "xgb__max_depth": [4,5,6], "xgb__colsample_bytree":[0.6, 0.9, 1]},
+     {"xgb__n_estimators":[90, 110], "xgb__learning_rate": [0.1,  0.001, 0.5],
+    "xgb__max_depth": [4,5,6], "xgb__colsample_bytree":[0.6, 0.9, 1],
+    "xgb__colsample_bylevel": [0.6, 0.7, 0.9]}
+
+]
+n_jobs = -1
+
+pipe = Pipeline([("scaler", MinMaxScaler()), ("xgb", XGBClassifier())])
 # alias를 사용할 수 있다 
 
-# model = GridSearchCV(pipe, parameters, cv=kfold, verbose=1)
 model = RandomizedSearchCV(pipe, parameters, cv=kfold, verbose=1)
-# 1)
-# ValueError: Invalid parameter n_estimators -> 에러 발생 
-# 위의 parameters는 RandomForestClassifier의 파라미터. 그러므로 pipe의 파라미터가 아니므로 에러가 발생한 것 
-
 
 #3. training
 start_time = time.time()
