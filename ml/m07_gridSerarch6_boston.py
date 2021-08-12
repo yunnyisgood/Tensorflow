@@ -50,6 +50,7 @@ model.fit(x_train, y_train)
 #4.predict
 # 4-1 : train값으로 훈련을 했을 때 정확도
 print("최적의 매개변수: ", model.best_estimator_)
+print("best_params: ", model.best_params_)
 print("best_score_: ", model.best_score_)
 
 # 4-2 : test값을 따로 빼서 훈련을 거치지 않은 값들로 학습을 시킨 뒤 평가했을 때 

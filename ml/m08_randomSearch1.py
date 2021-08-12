@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.core.numeric import cross
 from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split, KFold, cross_val_score, GridSearchCV
+from sklearn.model_selection import train_test_split, KFold, cross_val_score, GridSearchCV, RandomizedSearchCV
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
@@ -23,7 +23,6 @@ GridSearchCV 사용
 -> 체로 걸러낸 cross validation data를 찾겠다 라는 의미
 
 단젇으로는 교차검증과 같이 시간이 오래 걸린다
--> RandomizedSearch로 해결
 
 '''
 
@@ -50,7 +49,11 @@ parameters = [
 ]
 
 #2.modeling
-model = GridSearchCV(SVC(), parameters, cv=kfold)
+# model = GridSearchCV(SVC(), parameters, cv=kfold, verbose=1)
+# Fitting 5 folds for each of 18 candidates, totalling 90 fits
+
+model = RandomizedSearchCV(SVC(), parameters, cv=kfold, verbose=1)
+# Fitting 5 folds for each of 10 candidates, totalling 50 fits
 
 #3. training
 model.fit(x_train, y_train)
@@ -67,7 +70,14 @@ y_pred  = model.predict(x_test)
 print("정답률: ", accuracy_score(y_test, y_pred))
 
 '''
+> GridSearch
 최적의 매개변수:  SVC(C=1, kernel='linear')
+best_score_:  0.9619047619047618
+model.score:  1.0
+정답률:  1.0
+
+> RandomizedSearch
+최적의 매개변수:  SVC(C=1000, kernel='linear')
 best_score_:  0.9619047619047618
 model.score:  1.0
 정답률:  1.0
