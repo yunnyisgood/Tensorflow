@@ -17,12 +17,12 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier # tree구조를 앙상블한 형태이다 
 import warnings
 from sklearn.pipeline import make_pipeline, Pipeline
+warnings.filterwarnings('ignore')
 
 '''
 pipeline을 사용하여 scaling
 '''
 
-warnings.filterwarnings('ignore')
 
 datasets = load_wine()
 print(datasets.DESCR)

@@ -4,6 +4,11 @@ from sklearn.decomposition import PCA
 from xgboost import XGBRegressor
 from sklearn.model_selection import train_test_split
 
+'''
+PCA 주성분분석 
+-> 일정한 비율로 컬럼을 압축한다 
+'''
+
 dataset = load_breast_cancer()
 x = dataset.data
 y = dataset.target

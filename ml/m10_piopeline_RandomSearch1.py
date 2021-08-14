@@ -151,4 +151,8 @@ best_params:  {'rf__min_samples_leaf': 7, 'rf__max_depth': 5}
 best_score_:  0.9238095238095239
 model.score:  1.0
 정답률:  1.0
+
+
+PCA
+
 '''

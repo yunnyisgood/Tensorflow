@@ -42,20 +42,12 @@ x = x.reshape(70000, 28*28)
 
 pca = PCA(n_components=154)
 x = pca.fit_transform(x)
-print(x)
-print(x.shape)
-
 pca_EVR = pca.explained_variance_ratio_
 print(pca_EVR)
-
-
 print(sum(pca_EVR))
-
 
 cumsum = np.cumsum(pca_EVR)
 print(cumsum)
-
-
 print(np.argmax(cumsum >= 0.95)+1)
 
 
@@ -67,7 +59,6 @@ print(x_train.shape, x_test.shape, y_train.shape, y_test.shape)
 # (56000, 154) (14000, 154) (56000,) (14000,)
 
 #교차검증
-
 n_splits = 5
 kfold = KFold(n_splits=n_splits,  shuffle=True, random_state=66)
 
