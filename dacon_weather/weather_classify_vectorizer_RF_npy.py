@@ -124,10 +124,18 @@ kfold = KFold(n_splits=n_splits,  shuffle=True, random_state=66)
 # model = make_pipeline(MaxAbsScaler(), RandomForestClassifier())
 # pipeline을 사용하여 scaling, modeling을 한번에
 
-parameters = [
-    {'rf__min_samples_leaf':[3, 5, 7], 'rf__max_depth':[2, 3, 5, 10]},
-    { 'rf__min_samples_split':[6, 8, 10]}
-]
+# parameters = [
+#     {'rf__min_samples_leaf':[3, 5, 7], 'rf__max_depth':[2, 3, 5, 10]},
+#     { 'rf__min_samples_split':[6, 8, 10]}
+# ]
+
+parameters = { 'rf__n_estimators' : [10, 100],
+           'rf__max_depth' : [6, 8, 10, 12],
+           'rf__min_samples_leaf' : [8, 12, 18],
+           'rf__min_samples_split' : [8, 16, 20]
+            }
+
+
 
 pipe = Pipeline([("scaler", MaxAbsScaler()), ("rf", RandomForestClassifier())])
 
@@ -136,6 +144,7 @@ model = RandomizedSearchCV(pipe, parameters, cv=kfold, verbose=1)
 
 #3. training
 model.fit(x_train, y_train)
+print(model.best_params_)
 
 #4.predict
 print("model.score: ", model.score(x_test, y_test))
