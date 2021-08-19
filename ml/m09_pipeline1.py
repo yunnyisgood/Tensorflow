@@ -20,6 +20,7 @@ from sklearn.pipeline import make_pipeline, Pipeline
 
 '''
 pipeline을 사용하여 scaling
+파이프라인을 사용하면 데이터 사전 처리 및 분류의 모든 단계를 포함한 단일 개체 생성가능
 '''
 
 warnings.filterwarnings('ignore')
