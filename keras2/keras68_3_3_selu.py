@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def selu(x, a):
-    return a*(np.maximum(0, x)) # 0보다 큰 값은 유지, 0보다 작은 값은 0으로 처리
+    return a*(np.maximum(0, x)) 
 
 x = np.arange(-5, 5, 0.1)
 y = selu(x, 1)

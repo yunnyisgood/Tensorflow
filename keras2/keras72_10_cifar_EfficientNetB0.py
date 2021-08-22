@@ -1,6 +1,6 @@
 from tensorflow.keras.layers import Dense, Flatten, GlobalAvgPool1D
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.applications import Xception
+from tensorflow.keras.applications import VGG16, VGG19, ResNet50, ResNet101, InceptionResNetV2, DenseNet121, MobileNetV2, NASNetMobile, EfficientNetB0
 import pandas as pd
 from tensorflow.keras.datasets import cifar10, cifar100
 from tensorflow.keras.utils import to_categorical
@@ -10,7 +10,6 @@ from tensorflow.python.keras.layers.core import Dropout
 from tensorflow.python.keras.layers.pooling import GlobalAveragePooling2D, MaxPool2D, MaxPooling2D
 import time
 from tensorflow.keras.callbacks import EarlyStopping
-import tensorflow as tf
 
 # cifar10 실습 [FC를 모델로 하고 MAPooling 사용 ]
 (x_train, y_train), (x_test, y_test) = cifar10.load_data()
@@ -18,6 +17,8 @@ import tensorflow as tf
 
 x_train = x_train.reshape(50000, 32 * 32 * 3)
 x_test = x_test.reshape(10000, 32 * 32 * 3)
+
+print(x_train.shape, x_test.shape) 
 
 scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
@@ -29,25 +30,14 @@ x_test = x_test.reshape(10000, 32, 32, 3)
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
 
-print(x_train.shape, y_train.shape) #(50000, 32, 32, 3) (50000, 10)
-print(x_test.shape, y_test.shape)  #(10000, 32, 32, 3) (10000, 10)
 
-# resize해서 이미지 크기 크게했을 때 성능 훨씬 좋아짐
-x_train=tf.image.resize(x_train,[71,71])
-x_test=tf.image.resize(x_test,[71,71])
+eff = EfficientNetB0(weights='imagenet', include_top=False, input_shape=(32, 32, 3))
 
-print(x_train.shape, y_train.shape) 
-print(x_test.shape, y_test.shape)  
-
-#2. 모델 구성
-xcep = Xception(weights='imagenet', include_top=False, input_shape=(71,71,3))
-
-
-xcep.trainable =True   
+eff.trainable =False   
 
 model = Sequential()
-model.add(xcep)
-model.add(GlobalAveragePooling2D()) 
+model.add(eff)
+model.add(GlobalAveragePooling2D())
 # model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 model.add(Dense(32, activation='relu'))
@@ -74,51 +64,96 @@ print("걸린 시간: ", time.time()-start_time)
 
 
 '''
-둘다 훈련 시켰을 때가 성능이 좋은지 분석 
-
 1. cifar 10
 1) GAP
     True True 
-    loss:  1.8211287260055542
-    accuracy:  0.24699999392032623
-    걸린 시간:  1435.0262472629547
+    loss:  3.473520040512085
+    accuracy:  0.16089999675750732
+    걸린 시간:  1392.470942735672
 
     True False 
-    loss:  2.583721399307251
-    accuracy:  0.09920000284910202
+    loss:  3.5236217975616455
+    accuracy:  0.0869000032544136
+    걸린 시간:  77.8494598865509
 
     False False 
-    loss:  2.5722861289978027
-    accuracy:  0.10090000182390213
-    걸린 시간:  180.65854239463806
+    loss:  3.489985466003418
+    accuracy:  0.10639999806880951
+    걸린 시간:  77.49098658561707
 
     False True 
-    loss:  1.825405240058899
-    accuracy:  0.24140000343322754
-    걸린 시간:  1438.06161236763
+    loss:  3.297816514968872
+    accuracy:  0.10140000283718109
+    걸린 시간:  1387.1144683361053
 
 2)Flatten
 
     True True 
-    loss:  2.034485101699829
-    accuracy:  0.18299999833106995
-    걸린 시간:  1396.2824256420135
+    loss:  7.148913860321045
+    accuracy:  0.10000000149011612
+    걸린 시간:  1389.3791062831879
 
     True False 
-    loss:  2.579019069671631
-    accuracy:  0.10119999945163727
-    걸린 시간:  176.82081031799316
+    loss:  3.4350523948669434
+    accuracy:  0.09730000048875809
+    걸린 시간:  81.19321846961975
 
     False False 
-    loss:  2.4501872062683105
-    accuracy:  0.11320000141859055
-    걸린 시간:  177.30922508239746
+    loss:  2.6083879470825195
+    accuracy:  0.0966000035405159
+    걸린 시간:  77.51650714874268
 
     False True 
-    acc: 0.2479
-    loss:  1.832729697227478
-    accuracy:  0.24789999425411224
-    걸린 시간:  1370.5724246501923
+    loss:  2.6083879470825195
+    accuracy:  0.0966000035405159
+    걸린 시간:  77.51650714874268
+
+2. cifar 100
+1) GAP
+
+    True True 
+    loss:  5.403738498687744
+    accuracy:  0.010900000110268593
+    걸린 시간:  1389.757112979889
+
+    True False 
+    loss:  6.0106201171875
+    accuracy:  0.010300000198185444
+    걸린 시간:  77.22849297523499
+
+    False False 
+    loss:  5.652259349822998
+    accuracy:  0.00800000037997961
+    걸린 시간:  77.8190598487854
+
+    False True 
+    loss:  5.460933208465576
+    accuracy:  0.01679999940097332
+    걸린 시간:  1392.6751182079315
+
+2)Flatten
+
+    True True 
+    loss:  30.400400161743164
+    accuracy:  0.009999999776482582
+    걸린 시간:  1390.0777661800385
+
+    True False 
+    loss:  5.799483776092529
+    accuracy:  0.008999999612569809
+    걸린 시간:  78.2096905708313
+
+    False False 
+    loss:  5.976329326629639
+    accuracy:  0.011500000022351742
+    걸린 시간:  78.31431555747986
+
+    False True 
+    loss:  6.668507099151611
+    accuracy:  0.011099999770522118
+    걸린 시간:  1392.3767549991608
+
+
 
 
 
