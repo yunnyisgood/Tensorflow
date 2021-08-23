@@ -23,6 +23,7 @@ x_test = np.load('./_save/kerask59_men_women_x_test.npy')
 y_test = np.load('./_save/kerask59_men_women_y_test.npy')
 x_pred = np.load('./_save/kerask59_men_women_mine2.npy')
 
+
 print(x_train.shape, y_train.shape, x_test.shape, y_test.shape, x_pred.shape)
 # (2486, 80, 80, 3) (2483,) (828, 80, 80, 3) (827,) (5, 80, 80, 3)
 
