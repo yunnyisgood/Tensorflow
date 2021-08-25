@@ -12,7 +12,7 @@ tf.set_random_seed(66) # random state
 x_train = [1, 2, 3]
 y_train = [1, 2, 3]
 
-w = tf.Variable([0000], dtype=tf.float32) # 랜덤하게 내가 넣어준 초기값 
+w = tf.Variable([0000], dtype=tf.float32) # 랜덤하게 내가 넣어준 초기값 -> 아무값이나 넣어도 상관없다 
 b = tf.Variable([1], dtype=tf.float32) # 초기값 
 
 hypothesis = x_train*w+b # y = wx+b
