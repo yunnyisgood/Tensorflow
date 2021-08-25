@@ -20,11 +20,11 @@ def main(): # 제목
     start = 11
     while True:
 
-        if start != 21 :
+        if start != 1921 :
             try:
                 # 삼성
-                url = 'https://search.naver.com/search.naver?where=news&query=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90&sm=tab_opt&sort=0&photo=3&field=0&pd=6&ds=2021.02.07&de=2021.08.06&docid=&related=0&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so%3Ar%2Cp%3A6m&is_sug_officeid={}'
-                
+                # url = 'https://search.naver.com/search.naver?where=news&query=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90&sm=tab_opt&sort=0&photo=3&field=0&pd=6&ds=2021.02.07&de=2021.08.06&docid=&related=0&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so%3Ar%2Cp%3A6m&is_sug_officeid={}'
+                url = 'https://search.naver.com/search.naver?where=news&query=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90&sm=tab_opt&sort=0&photo=3&field=0&pd=3&ds=2021.04.01&de=2021.04.30&docid=&related=0&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so%3Ar%2Cp%3Afrom20210401to20210430&is_sug_officeid={}'
                 # 카카오
                 # url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=%EC%B9%B4%EC%B9%B4%EC%98%A4&sort=0&photo=3&field=0&pd=3&ds=2021.07.01&de=2021.07.31&cluster_rank=10&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:from20210701to20210731,a:all&start={}'
 
@@ -33,13 +33,11 @@ def main(): # 제목
                 # 2021.07.31&cluster_rank=18&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:from20210701to20210731,a:all&start={}'
 
                 headers = {'User-Agent': 'Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57'}
-
-                response = urllib.request.urlopen(url.format(start)).read().decode('utf-8')
                 
-                # response = requests.get(url.format(start), headers=headers)
-
+                response = requests.get(url.format(start))
 
                 soup = BeautifulSoup(response.text, 'html.parser') 
+                # soup = BeautifulSoup(response.text, 'html.parser') 
                 
                 # 기사 헤드라인 추출
                 title_list = [title['title'] for title in soup.find_all('a', attrs={'class' : 'news_tit'})]
@@ -57,7 +55,7 @@ def main(): # 제목
             except:
                     response = urllib.request.urlopen(url.format(start)).read().decode('utf-8')
                     
-                    soup = BeautifulSoup(response.text, 'html.parser') 
+                    soup = BeautifulSoup(response, 'html.parser') 
                     
                     # 기사 헤드라인 추출
                     title_list = [title['title'] for title in soup.find_all('a', attrs={'class' : 'news_tit'})]
@@ -110,7 +108,7 @@ def main(): # 제목
             date_time = date_time.replace(':','시') + '분'
 
             folder_path = os.getcwd()
-            xlsx_file_name = '네이버뉴스_{}.xlsx'.format(date_time)
+            xlsx_file_name = '네이버뉴스_5월{}.xlsx'.format(date_time)
 
             df.to_excel(xlsx_file_name)
 

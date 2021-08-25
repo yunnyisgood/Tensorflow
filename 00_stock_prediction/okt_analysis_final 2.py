@@ -9,14 +9,16 @@ from itertools import accumulate
 from datetime import datetime
 import os
 
-samsung = pd.read_excel('../_data/네이버뉴스_2021-08-02_삼성전자.xlsx', header=0)
-stopwords = pd.read_csv('../_data/stopwords.txt').values.tolist()
-word_dict = pd.read_csv('../_data/SentiWord_Dict.txt', sep='\s+', header=None,
+samsung = pd.read_excel('6개월_최종뉴스크롤링2021-08-18_23시07분.xlsx', header=0)
+samsung = samsung[['title', 'date']]
+stopwords = pd.read_csv('stopwords.txt').values.tolist()
+word_dict = pd.read_csv('SentiWord_Dict.txt', sep='\s+', header=None,
                     names=['word', 'score'])
-with open('../_data/SentiWord_info.json', encoding='utf-8-sig', mode='r') as f:
+with open('SentiWord_info.json', encoding='utf-8-sig', mode='r') as f:
     data = pd.read_json(f)
 print(data)
 okt = Okt()
+print(samsung)
 
 df = pd.DataFrame()
 df['score'] = ""

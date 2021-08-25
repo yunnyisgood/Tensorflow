@@ -1,10 +1,12 @@
+from datetime import timedelta
 import pandas as pd
 import numpy as np
 import yfinance as yf
+import tensorflow as tf
 from pandas_datareader import data
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, PowerTransformer, QuantileTransformer, StandardScaler
-from tensorflow.keras.layers import Dense, LSTM, Input, concatenate, Conv1D, Flatten
+from keras.layers import Dense, LSTM, Input, concatenate, Conv2D, Flatten
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.models import Sequential
 import time
@@ -12,10 +14,8 @@ import matplotlib.pyplot as plt
 from konlpy.tag import Okt
 from icecream import ic
 
-
-
-samsung = pd.read_excel('../_data/삼성 최종2021-08-06_06시21분.xlsx', header=0)
-stopwords = pd.read_csv('../_data/stopwords.txt').values.tolist()
+'''samsung = pd.read_excel('삼성_6개월_최종2021-08-22_15시29분.xlsx', header=0)
+stopwords = pd.read_csv('stopwords.txt').values.tolist()
 
 ic(samsung) 
 
@@ -57,25 +57,40 @@ samsung['total_score'] = pd.Series(total_score)
 # 날짜별 데이터로 합산해서 평균 구하기
 grouped = samsung.groupby('date')
 df = pd.DataFrame(grouped.mean())
+ic(df.index)
 
-df2 =df.drop(['2021.07.03.', '2021.07.04.', '2021.07.10.', '2021.07.11.', '2021.07.17.', '2021.07.18.',
-'2021.07.24.', '2021.07.25.', '2021.07.31'])
+# 주말 반복문으로 다 제거하기 
+week_days = pd.date_range(df.index[0], df.index[-1], freq='B')
+print('week_days: ', week_days)
 
-ic(df2)
+for i in df.index:
+    if i not in week_days:
+        print('index check: ',i)
+        df = df.drop([i])
 
-samsung_score = df2['total_score'].to_numpy()
+df =df.drop(['2021.02.11.', '2021.03.01.', '2021.05.05.', '2021.05.19.'])
+
+ic(df)
+ic(df.shape)
+
+samsung_score = df['total_score'].to_numpy()
 print(samsung_score) 
 
-np.save('../_data/samsung_save.npy', arr=samsung_score)
 
-score = np.load('../_data/samsung_save.npy')
+np.save('samsung_save.npy', arr=samsung_score)'''
+
+score = np.load('samsung_save.npy')
 print(score)
 print(len(score))
 
 # 삼성주가 다운로드
-start_date = '2021-07-01'
+start_date = '2021-02-01'
 end_date = '2021-08-01'
 SAMSUNG = data.get_data_yahoo('005930.KS', start_date, end_date)
+ic(type(SAMSUNG)) #  type(SAMSUNG): <class 'pandas.core.frame.DataFrame'>
+ic(SAMSUNG.shape) # SAMSUNG.shape: (125, 6)
+ic(SAMSUNG)
+
 
 dic = {
     'ds': SAMSUNG.index,
@@ -85,7 +100,7 @@ dic = {
 
 df = pd.DataFrame.from_dict(dic, orient='index')
 df = df.transpose()
-
+ic(df)
 
 # x, y 분류
 x = df[['y', 'score']]#[:-3]
@@ -110,7 +125,7 @@ y = split_x(y, size)
 print(x.shape, y.shape)
 # (18, 5, 2) (18, 5, 1) (2, 5, 2)
 
-x = x.reshape(18*5, 2).astype(float)
+'''x = x.reshape(18*5, 2).astype(float)
 y = y.reshape(18*5, 1).astype(float)
 
 
@@ -192,4 +207,4 @@ plt.ylabel('acc')
 plt.xlabel('epoch')
 plt.legend(['acc', 'val_acc'])
 
-plt.show()
+plt.show()'''
