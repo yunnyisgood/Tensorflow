@@ -22,14 +22,14 @@ x = tf.placeholder(tf.float32, shape=[None, 30])
 y = tf.placeholder(tf.float32, shape=[None, 1])
 
 
-w = tf.Variable(tf.random_normal([30, 1]), dtype=tf.float32)
-b = tf.Variable(tf.random_normal([1]), dtype=tf.float32)
+w = tf.Variable(tf.zeros([30, 1]), dtype=tf.float32)
+b = tf.Variable(tf.zeros([1]), dtype=tf.float32)
 
 hypothesis = tf.sigmoid(tf.matmul(x, w) + b)
 
 cost = -tf.reduce_mean(y*tf.log(hypothesis)+(1-y)*tf.log(1-hypothesis)) 
 
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=9e-1)
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.00000011)
 train = optimizer.minimize(cost)
 
 
@@ -40,7 +40,7 @@ sess.run(tf.global_variables_initializer())
 for epochs in range(5001):
     cost_val, hy_val, _ = sess.run([cost, hypothesis, train], 
                     feed_dict={x:x_train, y:y_train})
-    if epochs % 10 == 0:
+    if epochs % 50 == 0:
         print(epochs, 'cost: ', cost_val, "\n", hy_val)
 
 predict = tf.cast(hypothesis > 0.5, dtype=tf.float32)
@@ -52,3 +52,7 @@ print('predict:\n ', hy_val, "\n 예측결과 값\n : ", c, "\n Accuracy: ", a)
 
 
 sess.close()
+
+'''
+ Accuracy:  0.8596491
+'''
