@@ -57,7 +57,7 @@ print(xy_train[0][0].shape, xy_train[0][1].shape)
 print(xy_test[0][0].shape, xy_test[0][1].shape)
 
 
-np.save('./_save/_npy/kerask59_men_women_x_train.npy', arr=xy_train[0][0])
-np.save('./_save/_npy/kerask59_men_women_y_train.npy', arr=xy_train[0][1])
-np.save('./_save/_npy/kerask59_men_women_x_test.npy', arr=xy_test[0][0])
-np.save('./_save/_npy/kerask59_men_women_y_test.npy', arr=xy_test[0][1])
+np.save('./_save/kerask59_men_women_x_train.npy', arr=xy_train[0][0])
+np.save('./_save/kerask59_men_women_y_train.npy', arr=xy_train[0][1])
+np.save('./_save/kerask59_men_women_x_test.npy', arr=xy_test[0][0])
+np.save('./_save/kerask59_men_women_y_test.npy', arr=xy_test[0][1])

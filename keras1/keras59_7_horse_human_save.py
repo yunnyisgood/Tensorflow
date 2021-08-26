@@ -55,7 +55,7 @@ print(xy_test[0][0].shape, xy_test[0][1].shape)
 # (205, 64, 64, 3) (205, 2)
 # (256, 64, 64, 3) (256, 
 
-np.save('./_save/_npy/kerask59_horse_x_train.npy', arr=xy_train[0][0])
-np.save('./_save/_npy/kerask59_horse_y_train.npy', arr=xy_train[0][1])
-np.save('./_save/_npy/kerask59_horse_x_test.npy', arr=xy_test[0][0])
-np.save('./_save/_npy/kerask59_horse_y_test.npy', arr=xy_test[0][1])
+np.save('./_save/kerask59_horse_x_train.npy', arr=xy_train[0][0])
+np.save('./_save/kerask59_horse_y_train.npy', arr=xy_train[0][1])
+np.save('./_save/kerask59_horse_x_test.npy', arr=xy_test[0][0])
+np.save('./_save/kerask59_horse_y_test.npy', arr=xy_test[0][1])

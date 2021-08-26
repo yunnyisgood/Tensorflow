@@ -33,9 +33,9 @@ scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
-x_train = x_train.reshape(2486, 80 , 80, 3).astype('float')/255
-x_test = x_test.reshape(828, 80 , 80, 3).astype('float')/255
-x_pred = x_pred.reshape(5, 80 , 80, 3).astype('float')/255
+x_train = x_train.reshape(2486, 80 , 80, 3)
+x_test = x_test.reshape(828, 80 , 80, 3)
+x_pred = x_pred.reshape(5, 80 , 80, 3)
 
 
 x_train_noised = x_train + np.random.normal(0, 0.1, size=x_train.shape)
@@ -48,19 +48,35 @@ x_test_noised = np.clip(x_test_noised, a_min=0, a_max=1)
 x_pred_noised = np.clip(x_pred_noised, a_min=0, a_max=1)
 
 # modeling
+# def autocoder():
+#     input = Input(shape=(80, 80, 3))
+#     encoded = Conv2D(16,(3, 3), activation='relu', padding='same')(input)
+#     encoded = MaxPooling2D((3, 3), padding='same')(encoded)
+#     encoded = Conv2D(32,(3, 3), activation='relu', padding='same')(encoded)
+#     encoded = MaxPooling2D((3, 3), padding='same')(encoded)
+#     encoded = Conv2D(64,(3, 3), activation='relu', padding='same')(encoded)
+
+#     decoded = Conv2D(32,(3, 3), activation='relu', padding='same')(encoded)
+#     decoded = UpSampling2D(size=(3,3))(decoded)
+#     decoded = Conv2D(16,(3, 3), activation='relu', padding='same')(decoded)
+#     decoded = UpSampling2D(size=(3,3))(decoded)
+#     output = Conv2D(3,(3, 3), padding='same')(decoded)
+#     autoencoder = Model(input, output)
+#     return autoencoder
+
 def autocoder():
     input = Input(shape=(80, 80, 3))
-    encoded = Conv2D(16,(2, 2), activation='relu')(input)
-    encoded = MaxPooling2D((2, 2))(encoded)
-    encoded = Conv2D(32,(2, 2), activation='relu')(encoded)
-    encoded = MaxPooling2D((2, 2))(encoded)
-    encoded = Conv2D(64,(2, 2), activation='relu')(encoded)
+    encoded = Conv2D(16,(3, 3), activation='relu', strides=(2, 2))(input)
+    encoded = MaxPooling2D((3, 3), strides=(2, 2))(encoded)
+    encoded = Conv2D(32,(3, 3), activation='relu', padding='same')(encoded)
+    encoded = MaxPooling2D((3, 3), strides=(1,1))(encoded)
+    encoded = Conv2D(64,(3, 3), activation='relu', padding='same')(encoded)
 
-    decoded = Conv2D(32,(2, 2), activation='relu')(encoded)
+    decoded = Conv2D(32,(3, 3), activation='relu', padding='same')(encoded)
     decoded = UpSampling2D(size=(2, 2))(decoded)
-    decoded = Conv2D(16,(2, 2), activation='relu')(decoded)
+    decoded = Conv2D(16,(3, 3), activation='relu', padding='same')(decoded)
     decoded = UpSampling2D(size=(2, 2))(decoded)
-    output = Conv2D(3,(2,2))(decoded)
+    output = Conv2D(3,(3,3), activation='sigmoid', padding='same')(decoded)
     autoencoder = Model(input, output)
     return autoencoder
 

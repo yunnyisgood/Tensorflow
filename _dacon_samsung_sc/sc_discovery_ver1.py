@@ -23,6 +23,9 @@ print('torch version :', torch.__version__)
 train = pd.read_csv('../_data/samsung_sc_discovery/train.csv')
 dev = pd.read_csv('../_data/samsung_sc_discovery/dev.csv')
 
+print(train.head)
+print(dev.head)
+
 train = pd.concat([train, dev])
 
 train['S1_energy(eV)'].hist(bins=100, alpha=0.5)
@@ -33,15 +36,18 @@ for idx, row in tqdm(train.iterrows()):
     file = row['uid']
     smiles = row['SMILES']
     m = Chem.MolFromSmiles(smiles)
+    print('1')
     if m != None:
         img = Draw.MolToImage(m, size=(300,300))
         img.save(f'../_data/samsung_sc_discovery/train_imgs/{file}.png')
-   
+        
+print('2')
 sample_img = cv2.imread('../_data/samsung_sc_discovery/train_imgs/dev_0.png')
 plt.imshow(sample_img)
 plt.show()
 
-device = torch.device("cuda:0")
+# 여기서부터 멈춤
+device = torch.device("cuda:1")
 BATCH_SIZE = 64
 EPOCHS = 25
 num_layers = 1
@@ -50,6 +56,7 @@ embedding_dim = 128
 learning_rate = 1e-4
 vision_pretrain = True
 save_path = f'../_data/samsung_sc_discovery/best_model.pt'
+print('3')
 
 class SMILES_Tokenizer():
     def __init__(self, max_length):
@@ -82,7 +89,7 @@ class SMILES_Tokenizer():
         return np.array(seqs)
 
 max_len = train.SMILES.str.len().max()
-print(max_len)
+print('max_len: ',max_len)
 
 tokenizer = SMILES_Tokenizer(max_len)
 tokenizer.fit(train.SMILES)

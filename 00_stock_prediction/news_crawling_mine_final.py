@@ -22,7 +22,8 @@ def main(): # 제목
         if start != 1921 :
 
             # 삼성
-            url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90&sort=0&photo=3&field=0&pd=3&ds=2021.07.01&de=2021.07.31&cluster_rank=18&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:from20210701to20210731,a:all&start={}'
+            # url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90&sort=0&photo=3&field=0&pd=3&ds=2021.07.01&de=2021.07.31&cluster_rank=18&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:from20210701to20210731,a:all&start={}'
+            url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90&sort=0&photo=3&field=0&pd=3&ds=2021.02.01&de=2021.02.28&cluster_rank=24&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:from20210201to20210228,a:all&start={}'
             
             # 카카오
             # url = 'https://search.naver.com/search.naver?where=news&sm=tab_pge&query=%EC%B9%B4%EC%B9%B4%EC%98%A4&sort=0&photo=3&field=0&pd=3&ds=2021.07.01&de=2021.07.31&cluster_rank=10&mynews=0&office_type=0&office_section_code=0&news_office_checked=&nso=so:r,p:from20210701to20210731,a:all&start={}'
@@ -88,7 +89,7 @@ def main(): # 제목
             date_time = date_time.replace(':','시') + '분'
 
             folder_path = os.getcwd()
-            xlsx_file_name = '네이버뉴스_{}.xlsx'.format(date_time)
+            xlsx_file_name = '네이버뉴스_2월{}.xlsx'.format(date_time)
 
             df.to_excel(xlsx_file_name)
 

@@ -9,10 +9,10 @@ from tensorflow.python.keras.layers.pooling import MaxPool1D
 import matplotlib.pyplot as plt
 
 
-x_train = np.load('./_save/_npy/kerask59_8_train_x64.npy')
-y_train = np.load('./_save/_npy/kerask59_8_train_y64.npy')
-x_test = np.load('./_save/_npy/kerask59_8_test_x64.npy')
-y_test = np.load('./_save/_npy/kerask59_8_test_y64.npy')
+x_train = np.load('./_save/kerask59_8_train_x64.npy')
+y_train = np.load('./_save/kerask59_8_train_y64.npy')
+x_test = np.load('./_save/kerask59_8_test_x64.npy')
+y_test = np.load('./_save/kerask59_8_test_y64.npy')
 
 print(x_train.shape, y_train.shape, x_test.shape, y_test.shape)
 # (8005, 80, 80, 3) (8005,) (2023, 80, 80, 3) (2023,)

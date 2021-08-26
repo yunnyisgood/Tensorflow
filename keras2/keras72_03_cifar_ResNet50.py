@@ -37,8 +37,8 @@ res50.trainable =False
 
 model = Sequential()
 model.add(res50)
-# model.add(GlobalAveragePooling2D())
-model.add(Flatten())
+model.add(GlobalAveragePooling2D())
+# model.add(Flatten())
 model.add(Dense(128, activation='relu'))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(10, activation='softmax'))
@@ -67,95 +67,35 @@ print("걸린 시간: ", time.time()-start_time)
 1. cifar 10
 1) GAP
     True True 
-    loss:  3.473520040512085
-    accuracy:  0.16089999675750732
-    걸린 시간:  1392.470942735672
+    loss:  4.037076473236084
+    accuracy:  0.11980000138282776
+    걸린 시간:  34.174720287323
 
     True False 
-    loss:  3.5236217975616455
-    accuracy:  0.0869000032544136
-    걸린 시간:  77.8494598865509
+
 
     False False 
-    loss:  3.489985466003418
-    accuracy:  0.10639999806880951
-    걸린 시간:  77.49098658561707
+
 
     False True 
-    loss:  3.297816514968872
-    accuracy:  0.10140000283718109
-    걸린 시간:  1387.1144683361053
+    loss:  3.6683311462402344
+    accuracy:  0.10080000013113022
+    걸린 시간:  34.01014542579651
 
 2)Flatten
 
     True True 
-    loss:  7.148913860321045
-    accuracy:  0.10000000149011612
-    걸린 시간:  1389.3791062831879
+    loss:  3.458590269088745
+    accuracy:  0.10350000113248825
+    걸린 시간:  50.69389200210571
 
     True False 
-    loss:  3.4350523948669434
-    accuracy:  0.09730000048875809
-    걸린 시간:  81.19321846961975
+
 
     False False 
-    loss:  2.6083879470825195
-    accuracy:  0.0966000035405159
-    걸린 시간:  77.51650714874268
+
 
     False True 
-    loss:  2.6083879470825195
-    accuracy:  0.0966000035405159
-    걸린 시간:  77.51650714874268
-
-2. cifar 100
-1) GAP
-
-    True True 
-    loss:  5.403738498687744
-    accuracy:  0.010900000110268593
-    걸린 시간:  1389.757112979889
-
-    True False 
-    loss:  6.0106201171875
-    accuracy:  0.010300000198185444
-    걸린 시간:  77.22849297523499
-
-    False False 
-    loss:  5.652259349822998
-    accuracy:  0.00800000037997961
-    걸린 시간:  77.8190598487854
-
-    False True 
-    loss:  5.460933208465576
-    accuracy:  0.01679999940097332
-    걸린 시간:  1392.6751182079315
-
-2)Flatten
-
-    True True 
-    loss:  30.400400161743164
-    accuracy:  0.009999999776482582
-    걸린 시간:  1390.0777661800385
-
-    True False 
-    loss:  5.799483776092529
-    accuracy:  0.008999999612569809
-    걸린 시간:  78.2096905708313
-
-    False False 
-    loss:  5.976329326629639
-    accuracy:  0.011500000022351742
-    걸린 시간:  78.31431555747986
-
-    False True 
-    loss:  6.668507099151611
-    accuracy:  0.011099999770522118
-    걸린 시간:  1392.3767549991608
-
-
-
 
 
 '''
-

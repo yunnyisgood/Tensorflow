@@ -32,5 +32,5 @@ print(type(x_pred))
 print(x_pred[0][0])
 
 
-np.save('./_save/_npy/kerask59_men_women_mine2.npy', arr=x_pred[0][0])
+np.save('./_save/kerask59_men_women_mine2.npy', arr=x_pred[0][0])
 

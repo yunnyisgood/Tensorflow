@@ -64,7 +64,7 @@ print(len(model.trainable_weights))  # 0 -> 4 : 위와 동일
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['acc'])
 start_time = time.time()
 es = EarlyStopping(monitor='val_loss', mode='auto', verbose=1, patience=1)
-model.fit(x_train, y_train, verbose=1, epochs=100, batch_size=1024, validation_split=0.2, callbacks=es)
+model.fit(x_train, y_train, verbose=1, epochs=100, batch_size=512, validation_split=0.2, callbacks=es)
 
 # evaluate 
 loss = model.evaluate(x_test, y_test)

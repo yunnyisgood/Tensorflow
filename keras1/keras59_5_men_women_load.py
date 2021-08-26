@@ -1,3 +1,14 @@
+'''
+실습 1
+man women 데이터로 모델링을 구성할 것 
+but, 용량이 너무 크기 때문에 문제 발생할 수도 
+=> np.save, load 사용해서 용량 낮추기 
+
+실습 2 <<< 과제 
+본인 사진으로 predict 하시오
+
+'''
+
 import numpy as np
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import Sequential
@@ -5,28 +16,28 @@ from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropou
 from tensorflow.keras.callbacks import EarlyStopping
 import time
 from sklearn.model_selection import train_test_split
-from tensorflow.python.keras.layers.pooling import MaxPool1D
-import matplotlib.pyplot as plt
+from keras.preprocessing import image
 
 
-x_train = np.load('./_save/_npy/kerask59_rps_x_train.npy')
-y_train = np.load('./_save/_npy/kerask59_rps_y_train.npy')
-x_test = np.load('./_save/_npy/kerask59_rps_x_test.npy')
-y_test = np.load('./_save/_npy/kerask59_rps_y_test.npy')
+x_train = np.load('./_save/kerask59_men_women_x_train.npy')
+y_train = np.load('./_save/kerask59_men_women_y_train.npy')
+x_test = np.load('./_save/kerask59_men_women_x_test.npy')
+y_test = np.load('./_save/kerask59_men_women_y_test.npy')
+x_pred = np.load('./_save/kerask59_men_women_mine2.npy')
+
+print(x_train.shape, y_train.shape, x_test.shape, y_test.shape, x_pred.shape)
+# (2483, 80, 80, 3) (2483,) (827, 80, 80, 3) (827,) (5, 80, 80, 3)
 
 
-
-print(x_train.shape, y_train.shape, x_test.shape, y_test.shape)
-# (1890, 80, 80, 3) (1890, 3) (630, 80, 80, 3) (630, 3)
+# modling
 
 model = Sequential()
-
 model.add(Conv2D(filters = 8, kernel_size=(3,3), input_shape =(80,80,3), activation= 'relu'))
-model.add(Dropout(0.2))
+# model.add(Dropout(0.2))
 model.add(Conv2D(filters = 8, kernel_size=(3,3), activation= 'relu'))
 model.add(MaxPooling2D(2,2))
 model.add(Conv2D(filters = 16, kernel_size=(2,2), activation= 'relu'))
-model.add(Dropout(0.2))
+# model.add(Dropout(0.2))
 model.add(Conv2D(filters = 16, kernel_size=(2,2), activation= 'relu'))
 model.add(MaxPooling2D(2,2))
 model.add(Conv2D(filters = 32, kernel_size=(3,3), activation= 'relu'))
@@ -34,17 +45,18 @@ model.add(Conv2D(filters = 32, kernel_size=(3,3), activation= 'relu'))
 model.add(Flatten())
 model.add(Dense(128, activation= 'relu'))
 model.add(Dense(64, activation= 'relu'))
-model.add(Dense(3, activation= 'softmax'))
+model.add(Dense(1, activation= 'sigmoid'))
 
 
 # compile
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['acc'])
 
 es = EarlyStopping(monitor='val_loss', patience=10, verbose=1, mode='min', restore_best_weights=True)
 
 start_time = time.time()
-hist = model.fit(x_train, y_train, epochs=100, verbose=1, callbacks=[es], validation_split=0.2,
+hist = model.fit(x_train, y_train, epochs=1000, verbose=1, callbacks=[es], validation_split=0.2,
 shuffle=True, batch_size=9)
+
 end_time = time.time() - start_time
 
 acc = hist.history['acc']
@@ -52,52 +64,27 @@ val_acc = hist.history['val_acc']
 loss = hist.history['loss']
 val_loss = hist.history['val_loss']
 
-
 # evaluate 
 loss = model.evaluate(x_test, y_test)
 print('loss: ', loss[0])
 print('acc: ', acc[-1])
 print('val_acc: ', val_acc[-1])
 
-# 시각화 
-plt.figure(figsize=(9,5))
+# 내 사진으로 예측하기 
+y_pred = model.predict([x_pred])
+print('y_pred 1:', y_pred)
+# [[1.][1.][1.][1.][1.]]
 
-# 1
-plt.subplot(2, 1, 1) 
-plt.plot(hist.history['loss'], marker='.', c='red', label='loss')
-plt.plot(hist.history['val_loss'], marker='.', c='blue', label='val_loss')
-plt.grid()
-plt.title('loss')
-plt.ylabel('loss')
-plt.xlabel('epoch')
-plt.legend(loc='upper right')
+y_pred = y_pred * 100
 
-# 2
-plt.subplot(2, 1, 2) 
-plt.plot(hist.history['acc'])
-plt.plot(hist.history['val_acc'])
-plt.grid()
-plt.title('acc')
-plt.ylabel('acc')
-plt.xlabel('epoch')
-plt.legend(['acc', 'val_acc'])
-
-plt.show()
-
+print('여자일 확률 : ', y_pred[0], '%')
+# 여자일 확률 : 100%
 
 
 '''
-loss:  2.4712209701538086
-acc:  0.955320417881012
-val_acc:  0.6084656119346619
-
-batch_size=8
-loss:  1.0986186265945435
-acc:  0.31283068656921387
-val_acc:  0.33068782091140747
-
-
-
-
+loss:  -3.8648104635991484e+20
+acc:  0.431017130613327
+val_acc:  0.40442654490470886
+여자일 확률 :  [100.] %
 '''
 

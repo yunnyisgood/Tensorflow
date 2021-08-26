@@ -14,19 +14,28 @@ aaa = aaa.transpose()
 print(aaa.shape)                
 
 def outliers(data_out):
-    quantile_1, q2, quantile_3 = np.percentile(data_out, [25, 50, 75])
-    # np.percentile(arr, 분위)
-    # np.percentile(data_out, [25, 50, 75]) -> 하위 25%, 50%, 상위 25%를 찾아준다 
+    col_list = []
+    for i in range(data_out.shape[1]):
+        quantile_1, q2, quantile_3 = np.percentile(data_out[:, i], [25, 50, 75])
+        print("1사분위: ", quantile_1)
+        print("q2: ", q2)
+        print("3사분위: ", quantile_3)
+        iqr = quantile_3 - quantile_1
+        print('iqr: ', iqr)
+        lower_bound = quantile_1 - (iqr * 1.5)
+        upper_bound = quantile_3 + (iqr * 1.5)
+        print('lower_bound: ', lower_bound)
+        print('upper_bound: ', upper_bound)
 
-    print("1사분위: ", quantile_1)
-    print("q2: ", q2)
-    print("3사분위: ", quantile_3)
-    iqr = quantile_3 - quantile_1
-    lower_bound = quantile_1 - (iqr * 1.5)
-    upper_bound = quantile_3 + (iqr * 1.5)
+        m = np.where((data_out[:, i]>upper_bound) | (data_out[:, i]<lower_bound))
+        n = np.count_nonzero((data_out[:, i]>upper_bound) | (data_out[:, i]<lower_bound))
+        col_list.append([i+1,'columns', m, 'outlier_num :', n])
+    
+    return np.array(col_list)
 
-    return np.where((data_out>upper_bound) | (data_out<lower_bound))
+outliers_loc = outliers(aaa)
 
+print("이상치의 위치: ", outliers_loc)
 
 # 시각화
 # 위 데이터를 boxplot 형태로 그리시오
