@@ -22,9 +22,7 @@ cost = -tf.reduce_mean(y*tf.log(hypothesis)+(1-y)*tf.log(1-hypothesis)) # binary
 optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
 train = optimizer.minimize(cost)
 
-predict = tf.cast(hypothesis > 0.5, dtype=tf.float32)
-# 0.5를 초과하면 1, 아니면 0
-accuracy = tf.reduce_mean(tf.cast(tf.equal(predict, y), dtype=tf.float32))
+
 
 sess = tf.compat.v1.Session()
 sess.run(tf.global_variables_initializer())
@@ -35,6 +33,9 @@ for epochs in range(5001):
     if epochs % 10 == 0:
         print(epochs, 'cost: ', cost_val, "\n", hy_val)
 
+predict = tf.cast(hypothesis > 0.5, dtype=tf.float32)
+# 0.5를 초과하면 1, 아니면 0
+accuracy = tf.reduce_mean(tf.cast(tf.equal(predict, y), dtype=tf.float32))
 c, a = sess.run([predict, accuracy], feed_dict={x:x_data, y:y_data})
 print('predict:\n ', hy_val, "\n 예측결과 값\n : ", c, "\n Accuracy: ", a)
 
