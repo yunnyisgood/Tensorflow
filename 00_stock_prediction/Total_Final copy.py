@@ -14,7 +14,6 @@ import matplotlib.pyplot as plt
 from konlpy.tag import Okt
 from icecream import ic
 from sklearn.metrics import mean_squared_error
-from tensorflow.keras.optimizers import Adam
 
 '''samsung = pd.read_excel('삼성_6개월_최종2021-08-22_15시29분.xlsx', header=0)
 stopwords = pd.read_csv('stopwords.txt').values.tolist()
@@ -158,13 +157,13 @@ model.summary()
 
 
 # compile
-model.compile(loss='mse', optimizer=Adam(learning_rate=0.001), metrics=['mse'])
+model.compile(loss='mse', optimizer='adam', metrics=['mse'])
 
 es = EarlyStopping(monitor='val_loss', patience=10, verbose=1, mode='min')
 
 start_time = time.time()
 hist = model.fit(x_train, y_train, epochs=100, verbose=1, callbacks=[es], validation_split=0.1,
-shuffle=True, batch_size=10)
+shuffle=True, batch_size=1)
 end_time = time.time() - start_time
 
 
@@ -209,37 +208,8 @@ plt.legend(['mse'])
 plt.show()
 
 '''
-batch_size = 1
 loss:  0.0448458306491375
 mse:  0.0448458306491375
 r2스코어: 0.9999999840520231
 rmse:  0.21176834324036842
-
-batch_size = 8
-loss:  0.0017199907451868057
-mse:  0.0017199907451868057
-r2스코어: 0.9999999993986595
-rmse:  0.04112145426689808
-
-batch_size=10
-loss:  0.0009225313551723957
-mse:  0.0009225313551723957
-r2스코어: 0.9999999996733547
-rmse:  0.030307244558783326
-
-batch_size=16
-loss:  0.001222704304382205
-mse:  0.001222704304382205
-r2스코어: 0.9999999995651846
-rmse:  0.03496718858678711
-
-lr = 0.001, batch_Size=10
-걸린시간:  2.873347520828247
-loss:  0.0005042904522269964
-mse:  0.0005042904522269964
-r2스코어: 0.9999999998206653
-rmse:  0.022456412699081645
-
-
-
-''' 
+'''
