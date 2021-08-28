@@ -59,7 +59,6 @@ def data_list(wordname):
 
 samsung['samsung_word list'] = np.nan
 samsung['samsung_word list'] = samsung['samsung_temp_list'].apply(lambda x: data_list(x))
-print(samsung)
 
 # 1차원의 데이터를 각 문장의 길이만큼 다시 자르기 
 word_list = df['score'][0]
