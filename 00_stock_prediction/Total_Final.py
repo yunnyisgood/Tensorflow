@@ -16,7 +16,7 @@ from icecream import ic
 from sklearn.metrics import mean_squared_error
 from tensorflow.keras.optimizers import Adam
 
-samsung = pd.read_excel('삼성_6개월_최종2021-08-22_15시29분.xlsx', header=0)
+'''samsung = pd.read_excel('삼성_6개월_최종2021-08-22_15시29분.xlsx', header=0)
 stopwords = pd.read_csv('stopwords.txt').values.tolist()
 
 okt = Okt()
@@ -43,15 +43,15 @@ samsung['score'] = pd.Series(temp_list)
 # 각 기사별 헤드라인의 긍정/부정 최종수치 구하기 
 
 total_score = []
-
 for i in range(len(samsung['samsung_temp_list'])):
     temp_len = len(samsung['samsung_temp_list'][i])
     result = sum(samsung['score'][i])
-    avg = result/temp_len
+    avg = result/temp_len # 각 헤드라인별 평균수치
     total_score.append(avg)
 
 samsung['total_score'] = np.nan
 samsung['total_score'] = pd.Series(total_score)
+
 
 # 날짜별 데이터로 합산해서 평균 구하기
 grouped = samsung.groupby('date')
@@ -67,10 +67,11 @@ for i in df.index:
         df = df.drop([i])
 df =df.drop(['2021.02.11.', '2021.03.01.', '2021.05.05.', '2021.05.19.'])
 
+ic('df: ', df)
 
 samsung_score = df['total_score'].to_numpy()
 
-np.save('samsung_save.npy', arr=samsung_score)
+np.save('samsung_save.npy', arr=samsung_score)'''
 
 score = np.load('samsung_save.npy')
 
@@ -120,7 +121,9 @@ x = x.reshape(121*5, 2).astype(float)
 y = y.reshape(121*5, 1).astype(float)
 
 x_train, x_test, y_train, y_test = train_test_split(x,  y, 
-                                                        train_size=0.9, random_state=9)
+                                                        train_size=0.7, random_state=9)
+
+ic(x_train.shape, x_test.shape, y_train.shape, y_test.shape)
 
 # scaling
 scaler = MinMaxScaler()
@@ -145,7 +148,7 @@ model.add(Dense(1))
 model.summary()
 
 # compile
-model.compile(loss='mse', optimizer=Adam(learning_rate=0.001), metrics=['mse'])
+model.compile(loss='mse', optimizer=Adam(learning_rate=0.00005), metrics=['mse'])
 
 es = EarlyStopping(monitor='val_loss', patience=10, verbose=1, mode='min')
 
@@ -220,6 +223,16 @@ mse:  0.001222704304382205
 r2스코어: 0.9999999995651846
 rmse:  0.03496718858678711
 
+batch_size=32
+loss:  0.005391885992139578
+r2스코어: 0.9999999979291958
+rmse:  0.07348881040077379
+
+batch_size=64
+loss:  0.0009493984980508685
+r2스코어: 0.9999999996305625
+rmse:  0.031040031216904868
+
 lr = 0.001, batch_Size=10
 걸린시간:  2.873347520828247
 loss:  0.0005042904522269964
@@ -252,4 +265,16 @@ batch_size=10, lr=0.0001
 loss:  0.0013187596341595054
 r2스코어: 0.9999999995313814
 rmse:  0.036300950802986134
+
+batch_size=10, lr=0.0005
+loss:  0.0011227786308154464
+r2스코어: 0.9999999995694826
+rmse:  0.033507888453301576
+
+batch_size=10, lr=0.00005
+걸린시간:  7.306777000427246
+loss:  0.0006204122910276055
+r2스코어: 0.9999999997627526
+rmse:  0.024874394716944182
+
 ''' 

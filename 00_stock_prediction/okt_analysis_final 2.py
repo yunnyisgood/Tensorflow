@@ -16,9 +16,7 @@ word_dict = pd.read_csv('SentiWord_Dict.txt', sep='\s+', header=None,
                     names=['word', 'score'])
 with open('SentiWord_info.json', encoding='utf-8-sig', mode='r') as f:
     data = pd.read_json(f)
-print(data)
 okt = Okt()
-print(samsung)
 
 df = pd.DataFrame()
 df['score'] = ""
@@ -61,7 +59,6 @@ def data_list(wordname):
 
 samsung['samsung_word list'] = np.nan
 samsung['samsung_word list'] = samsung['samsung_temp_list'].apply(lambda x: data_list(x))
-print(samsung)
 
 # 1차원의 데이터를 각 문장의 길이만큼 다시 자르기 
 word_list = df['score'][0]
