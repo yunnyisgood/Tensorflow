@@ -8,7 +8,7 @@ from rdkit import Chem, DataStructs
 from rdkit.Chem import MACCSkeys
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.layers import Dense, Dropout, MaxPooling2D
 import numpy as np
 import pandas as pd
 import math
@@ -28,6 +28,9 @@ ss  = pd.read_csv('../_data/samsung_sc_discovery/sample_submission.csv')
 X = np.load('../_data/sc_train_x.npy')
 Y = np.load('../_data/sc_train_y.npy')
 np_test_fps_array = np.load('../_data/sc_test_x.npy')
+
+print(X.shape, Y.shape, np_test_fps_array.shape ) # (30274, 2048) (30274,)
+
 # test_y = np.load('../_data/sc_test_x.npy')
 
 # def create_deep_learning_model():
@@ -41,43 +44,40 @@ np_test_fps_array = np.load('../_data/sc_test_x.npy')
 #     model.compile(loss='mae', optimizer='adam', metrics=['mae'])
 #     return model
 
-vgg16 = VGG16(weights='imagenet', include_top=False, input_shape=(2048,))
-
-vgg16.trainable =False  # vgg훈련을 동결한다 -> 0이 된다 
 
 def create_deep_learning_model():
     model = Sequential()
-    model.add(vgg16)
-    model.add(Flatten())
-    model.add(Dense(1024, input_dim=2048, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(2048, input_dim=2048, kernel_initializer='normal', activation='relu'))
     model.add(Dense(1024, activation='relu'))
     model.add(Dense(128, activation='relu'))
     model.add(Dense(16, activation='relu'))
+    model.add(Dense(2, activation='relu'))
     model.add(Dense(1, kernel_initializer='normal'))
-    model.compile(loss='mae', optimizer='adam', metrics=['mae'])
+    # model.compile(loss='mae', optimizer='adam', metrics=['mae'])
+    model.compile(loss='mae', optimizer=Adam(learning_rate=0.001), metrics=['mae'])
     return model
 
 print('X.shape: ', X.shape)
 print('Y.shape: ', Y.shape)
 
 #validation
-estimators = []
-# estimators.append(('standardize', StandardScaler()))
-estimators.append(('mlp', KerasRegressor(build_fn=create_deep_learning_model, epochs=20)))
-pipeline = Pipeline(estimators)
-kfold = KFold(n_splits=5)
-results = cross_val_score(pipeline, X, Y, cv=kfold)
-print("%.2f (%.2f) MAE" % (results.mean(), results.std()))
+# estimators = []
+# # estimators.append(('standardize', StandardScaler()))
+# estimators.append(('mlp', KerasRegressor(build_fn=create_deep_learning_model, epochs=20)))
+# pipeline = Pipeline(estimators)
+# kfold = KFold(n_splits=5)
+# results = cross_val_score(pipeline, X, Y, cv=kfold)
+# print("%.2f (%.2f) MAE" % (results.mean(), results.std()))
 
 model = create_deep_learning_model()
 es = EarlyStopping(monitor='loss', patience=1, verbose=1, restore_best_weights=True)
-model.fit(X, Y, epochs = 40, verbose=1, callbacks=es)
+model.fit(X, Y, epochs = 100, verbose=1, callbacks=es, batch_size=8)
 test_y = model.predict(np_test_fps_array)
 
 
 ss['ST1_GAP(eV)'] = test_y
 
-ss.to_csv('../_data/samsung_sc_discovery/dacon_baseline0819.csv', index=False)
+# ss.to_csv('../_data/samsung_sc_discovery/dacon_baseline0819.csv', index=False)
 
 date_time = str(datetime.now())
 date_time = date_time[:date_time.rfind(':')].replace(' ', '_')
