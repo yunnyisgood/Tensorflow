@@ -15,6 +15,17 @@ from tensorflow.python.distribute.distribute_lib import Strategy
 GPU 동시에 2개 쓰기
 '''
 
+
+# GPU 0번과 1번 나누어서 사용 
+import tensorflow as tf
+gpus = tf.config.experimental.list_physical_devices('GPU')
+if gpus : 
+    try :
+        
+        tf.config.experimental.set_visible_devices([gpus[0], gpus[1]], 'GPU')
+    except RuntimeError as e:
+        print(e)
+
 # data
 
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
