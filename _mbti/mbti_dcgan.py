@@ -34,6 +34,19 @@ dataset = dset.ImageFolder(root=des_dir,
                                # 이미지의 경우 픽셀 값 하나는 0~255의 값 
                                # ToTensor()로 타입 변경시 0 ~ 1 사이의 값으로 바뀜
                                # Normalize -> -1 ~ 1사이의 값으로 normalized 시킴
+
+                               '''
+                               image = (image - mean) / std
+                               This will normalize the image in the range [-1,1]. For example, the minimum value 0 will be converted to (0-0.5)/0.5=-1, 
+                               the maximum value of 1 will be converted to (1-0.5)/0.5=1.
+
+
+                               값을 0~1사이로 하기 위해서는
+                               image = ((image * std) + mean)
+                               
+
+
+                               '''
                            ]))
 
 
@@ -75,14 +88,15 @@ class _netG(nn.Module): # Generator -> 클래스 형태의 모델은 항상 nn.M
         self.ngpu = ngpu
         self.main = nn.Sequential(
 
-            # input is Z, going into a convolution
-            nn.ConvTranspose2d(nz, ngf * 8, 4, 1, 0, bias=False), 
+            # input is Z, going into a convolution 
+            # nz = 100, ngf = 64
+            # nn.ConvTranspose2d(nz, ngf * 8, 4, 1, 0, bias=False), 
             # ConvTranspose2d(a, b, c, d, e): a는 input 채널의 수, b는 만들어지는 결과값의 채널의 수 
             # c는 커널의 크기, 즉 Convolution 연산을 수행하는 필터의 크기
             # d는 stride, e는 padding
 
-            # nn.Conv2d(),
-            # nn.Upsample(),
+            nn.Upsample(scale_factor=2),
+            nn.Conv2d(nz, ngf * 8, 4, 1, 0, bias=False),
 
             nn.BatchNorm2d(ngf * 8),
             nn.ReLU(True),
@@ -204,6 +218,8 @@ for epoch in range(niter):
     for i, data in enumerate(dataloader, 0): # 배치사이즈로 잘린다. 이 때 i는 index, data는 value
         ############################
         # (1) Update D network: maximize log(D(x)) + log(1 - D(G(z)))
+        # 생성자가 얼마나 잘 가짜 데이터를 진짜 데이터처럼 생성했는지 알기 위해서는 를
+        # 먼저 판별자가 학습을 해서 가짜 이미지와 진짜 이미지를 학습해서 구별해야한다. 
         ###########################
 
         # train with real
@@ -220,9 +236,9 @@ for epoch in range(niter):
         labelv = Variable(label)
 
         output = netD(inputv)
-        errD_real = criterion(output, labelv) # labelv에 대한 loss를 구한다 -> lavelv는 진짜인지 아닌ㄴ지 값을 판명한 값 
+        errD_real = criterion(output, labelv) # labelv에 대한 loss를 구한다 -> lavelv는 진짜인지 아닌지 값을 판명한 값 
         errD_real.backward() # loss.backward()
-        D_x = output.data.mean() # real data 평균값 
+        D_x = output.data.mean() # real data 평균값 -> 1이 될수록 성능이 좋은 것 
 
         # train with fake
         noise.resize_(batch_size, nz, 1, 1).normal_(0, 1)
@@ -233,10 +249,10 @@ for epoch in range(niter):
         # 빈값을 만들었다가 batch size에 따라 0, 또는 1로 채운다 
         # 가짜 라벨로 만들어진다
 
-        output = netD(fake.detach()) # 
+        output = netD(fake.detach()) # discriminator.trainable = False
         errD_fake = criterion(output, labelv) 
         errD_fake.backward()
-        D_G_z1 = output.data.mean()  # fake data 평균값 
+        D_G_z1 = output.data.mean()  # 생성자가 만든 fake data를 판별자가 구분하는 값인데 0으로 판별할 수록 구분을 잘한다
 
         errD = errD_real + errD_fake
         optimizerD.step()
@@ -248,11 +264,11 @@ for epoch in range(niter):
         labelv = Variable(label.fill_(real_label))  
         # 진짜 라벨로 만들어진다
         
-        output = netD(fake)
+        output = netD(fake) # discriminator.trainable = True
 
         errG = criterion(output, labelv)
         errG.backward()
-        D_G_z2 = output.data.mean() # 
+        D_G_z2 = output.data.mean() # 생성자가 얼마나 fake 이미지를 잘 생성했는지
         optimizerG.step()
 
 
@@ -297,5 +313,64 @@ Discriminator는 가짜 데이터는 0, 진짜 데이터는 1을 출력하게 �
 
 D(x) : Discriminator's score -> 1이 될 수록 좋은 지표 
 D(G(z)) : Generator's score -> 0이 될수록 좋은 지표 
+
+'''
+
+'''
+Generator
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+   ConvTranspose2d-1          [-1, 512, 67, 67]         819,200
+       BatchNorm2d-2          [-1, 512, 67, 67]           1,024
+              ReLU-3          [-1, 512, 67, 67]               0
+   ConvTranspose2d-4        [-1, 256, 134, 134]       2,097,152
+       BatchNorm2d-5        [-1, 256, 134, 134]             512
+              ReLU-6        [-1, 256, 134, 134]               0
+   ConvTranspose2d-7        [-1, 128, 268, 268]         524,288
+       BatchNorm2d-8        [-1, 128, 268, 268]             256
+              ReLU-9        [-1, 128, 268, 268]               0
+  ConvTranspose2d-10         [-1, 64, 536, 536]         131,072
+      BatchNorm2d-11         [-1, 64, 536, 536]             128
+             ReLU-12         [-1, 64, 536, 536]               0
+  ConvTranspose2d-13        [-1, 3, 1072, 1072]           3,072
+             Tanh-14        [-1, 3, 1072, 1072]               0
+================================================================
+Total params: 3,576,704
+Trainable params: 3,576,704
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 1.56
+Forward/backward pass size (MB): 841.69
+Params size (MB): 13.64
+Estimated Total Size (MB): 856.89
+
+
+Discriminator
+----------------------------------------------------------------
+        Layer (type)               Output Shape         Param #
+================================================================
+            Conv2d-1           [-1, 64, 32, 32]           3,072
+         LeakyReLU-2           [-1, 64, 32, 32]               0
+            Conv2d-3          [-1, 128, 16, 16]         131,072
+       BatchNorm2d-4          [-1, 128, 16, 16]             256
+         LeakyReLU-5          [-1, 128, 16, 16]               0
+            Conv2d-6            [-1, 256, 8, 8]         524,288
+       BatchNorm2d-7            [-1, 256, 8, 8]             512
+         LeakyReLU-8            [-1, 256, 8, 8]               0
+            Conv2d-9            [-1, 512, 4, 4]       2,097,152
+      BatchNorm2d-10            [-1, 512, 4, 4]           1,024
+        LeakyReLU-11            [-1, 512, 4, 4]               0
+           Conv2d-12              [-1, 1, 1, 1]           8,192
+          Sigmoid-13              [-1, 1, 1, 1]               0
+================================================================
+Total params: 2,765,568
+Trainable params: 2,765,568
+Non-trainable params: 0
+----------------------------------------------------------------
+Input size (MB): 0.05
+Forward/backward pass size (MB): 2.31
+Params size (MB): 10.55
+
 
 '''
