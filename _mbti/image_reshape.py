@@ -2,9 +2,9 @@ from PIL import Image
 import os.path
 import os
 
-targerdir = r"D:\Tensorflow\_mbti\Cropped\ESFP\m"  # 크롭된 이미지 파일 위치 
+targerdir = r"D:\Tensorflow\_mbti\Cropped\ESFJ\w"  # 크롭된 이미지 파일 위치 
 
-newpath = r"D:\mbti\ESFP\m"  #저장팔 폴더 위치 
+newpath = r"D:\mbti"  #저장팔 폴더 위치 
 
 files = os.listdir(targerdir)
 
@@ -17,7 +17,7 @@ for (path,dirs,files) in os.walk(targerdir):
              
              image = Image.open(path+"\\"+file)
 
-             image=image.resize((150, 150))
+             image=image.resize((128, 128))
              
              image.save(newpath+"\\"+file)
          else:
